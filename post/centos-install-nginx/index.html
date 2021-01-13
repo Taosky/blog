@@ -1,0 +1,311 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+<meta name="description" content=""/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>Centos7编译安装nginx记录 | 某不科学的博客</title>
+
+<link rel="shortcut icon" href="https://taosky.github.io/favicon.ico?v=1610545653304">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://taosky.github.io/styles/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dart.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-56540702-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+        gtag('config', 'UA-56540702-2');
+    </script>
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <div class="navbar-brand">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first">
+            某不科学的博客
+        </div>
+    </div>
+    
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+                <div class="nav-item">
+                    
+                        <a href="/" class="menu gt-a-link">
+                            首页
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/tags" class="menu gt-a-link">
+                            标签
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/archives" class="menu gt-a-link">
+                            归档
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/friends" class="menu gt-a-link">
+                            友链
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/about" class="menu gt-a-link">
+                            留言
+                        </a>
+                    
+                </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1610545653304" action="/search/index.html">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    Centos7编译安装nginx记录
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2018-06-09 ·
+                    </time>
+                    
+                        <a href="https://taosky.github.io/tag/D6cqc6uAW/" class="post-tags">
+                            # Vultr
+                        </a>
+                    
+                        <a href="https://taosky.github.io/tag/R0DRLFGwd7/" class="post-tags">
+                            # Nginx
+                        </a>
+                    
+                        <a href="https://taosky.github.io/tag/PbwmsttNnP/" class="post-tags">
+                            # linux
+                        </a>
+                    
+                </div>
+                
+                <div class="post-content">
+                    <p>因为要添加<code>http_substitutions_filter</code>模块，照之前的方法复制原来的nginx的参数并不行。</p>
+<h2 id="编译安装">编译安装</h2>
+<p>下载解压<a href="https://ayera.dl.sourceforge.net/project/libpng/zlib/1.2.11/zlib-1.2.11.tar.gz">zlib</a>和<a href="https://cytranet.dl.sourceforge.net/project/pcre/pcre/8.42/pcre-8.42.tar.gz">pcre</a>和http_substitutions_filter模块。</p>
+<p>下载解压<a href="http://nginx.org/download/nginx-1.7.8.tar.gz">nginx</a>源码。</p>
+<p>参数:</p>
+<pre><code class="language-shell">./configure --with-pcre=../pcre-8.42 --with-zlib=../zlib-1.2.11 --add-module=../ngx_http_substitutions_filter_module/ --prefix=/usr/share/nginx --sbin-path=/usr/sbin/nginx --conf-path=/etc/nginx/nginx.conf --error-log-path=/var/log/nginx/error.log --http-log-path=/var/log/nginx/access.log --with-ipv6  --with-http_ssl_module --with-http_auth_request_module --with-http_gzip_static_module --with-http_mp4_module --with-http_gunzip_module --pid-path=/run/nginx.pid
+</code></pre>
+<h2 id="设置服务">设置服务</h2>
+<p>新建<code>/etc/init.d/nginx</code></p>
+<pre><code>#!/bin/sh  
+#  
+# nginx - this script starts and stops the nginx daemin  
+#  
+# chkconfig:   - 85 15   
+# description:  Nginx is an HTTP(S) server, HTTP(S) reverse /  
+#               proxy and IMAP/POP3 proxy server  
+# processname: nginx  
+# config:      /etc/nginx/nginx.conf
+# pidfile:     /run/nginx.pid
+  
+# Source function library.  
+. /etc/rc.d/init.d/functions  
+  
+# Source networking configuration.  
+. /etc/sysconfig/network  
+  
+# Check that networking is up.  
+[ &quot;$NETWORKING&quot; = &quot;no&quot; ] &amp;&amp; exit 0  
+  
+nginx=&quot;/usr/sbin/nginx&quot;  
+prog=$(basename $nginx)  
+  
+NGINX_CONF_FILE=&quot;/etc/nginx/nginx.conf&quot;  
+  
+lockfile=/var/lock/subsys/nginx  
+  
+start() {  
+    [ -x $nginx ] || exit 5  
+    [ -f $NGINX_CONF_FILE ] || exit 6  
+    echo -n $&quot;Starting $prog: &quot;  
+    daemon $nginx -c $NGINX_CONF_FILE  
+    retval=$?  
+    echo  
+    [ $retval -eq 0 ] &amp;&amp; touch $lockfile  
+    return $retval  
+}  
+  
+stop() {  
+    echo -n $&quot;Stopping $prog: &quot;  
+    killproc $prog -QUIT  
+    retval=$?  
+    echo  
+    [ $retval -eq 0 ] &amp;&amp; rm -f $lockfile  
+    return $retval  
+}  
+  
+restart() {  
+    configtest || return $?  
+    stop  
+    start  
+}  
+  
+reload() {  
+    configtest || return $?  
+    echo -n $&quot;Reloading $prog: &quot;  
+    killproc $nginx -HUP  
+    RETVAL=$?  
+    echo  
+}  
+  
+force_reload() {  
+    restart  
+}  
+  
+configtest() {  
+  $nginx -t -c $NGINX_CONF_FILE  
+}  
+  
+rh_status() {  
+    status $prog  
+}  
+  
+rh_status_q() {  
+    rh_status &gt;/dev/null 2&gt;&amp;1  
+}  
+  
+case &quot;$1&quot; in  
+    start)  
+        rh_status_q &amp;&amp; exit 0  
+        $1  
+        ;;  
+    stop)  
+        rh_status_q || exit 0  
+        $1  
+        ;;  
+    restart|configtest)  
+        $1  
+        ;;  
+    reload)  
+        rh_status_q || exit 7  
+        $1  
+        ;;  
+    force-reload)  
+        force_reload  
+        ;;  
+    status)  
+        rh_status  
+        ;;  
+    condrestart|try-restart)  
+        rh_status_q || exit 0  
+            ;;  
+    *)  
+        echo $&quot;Usage: $0 {start|stop|status|restart|condrestart|try-restart|reload|force-reload|configtest}&quot;  
+        exit 2  
+esac  
+</code></pre>
+<p>修改权限<code>chmod 755 /etc/init.d/nginx</code></p>
+<p>开机启动：<code>chkconfig nginx on</code></p>
+<h2 id="参考">参考</h2>
+<p>http://www.liuzhixiang.com/2014/12/19/Nginx-ngx_http_substitutions_filter_module/</p>
+<p>https://blog.csdn.net/u011781521/article/details/75675019</p>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://taosky.github.io/post/elasticsearch-install-problem/" class="post-title gt-a-link">
+                    Ubuntu14.04安装ElasticSearch的问题
+                </a>
+            </div>
+        
+
+        
+
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first">只能告诉你 要多想</div>
+    <div class="social-container">
+        
+            
+                <a href="https://github.com/Taosky" target="_blank">
+                    <i class="fab fa-github gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        <span><i class="iconfont reco-copyright"></i> <a><span>2014-</span>
+        2020
+        &nbsp
+        <span>Taosky</span></a></span>
+    </div>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+    </div>
+</div>
+</body>
+</html>

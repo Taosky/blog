@@ -1,0 +1,227 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+<meta name="description" content=""/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>Acrylic DNS Proxy搭建本地DNS及过墙 | 某不科学的博客</title>
+
+<link rel="shortcut icon" href="https://taosky.github.io/favicon.ico?v=1610545653304">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://taosky.github.io/styles/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dart.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-56540702-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+        gtag('config', 'UA-56540702-2');
+    </script>
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <div class="navbar-brand">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first">
+            某不科学的博客
+        </div>
+    </div>
+    
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+                <div class="nav-item">
+                    
+                        <a href="/" class="menu gt-a-link">
+                            首页
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/tags" class="menu gt-a-link">
+                            标签
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/archives" class="menu gt-a-link">
+                            归档
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/friends" class="menu gt-a-link">
+                            友链
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/about" class="menu gt-a-link">
+                            留言
+                        </a>
+                    
+                </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1610545653304" action="/search/index.html">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    Acrylic DNS Proxy搭建本地DNS及过墙
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2016-09-11 ·
+                    </time>
+                    
+                        <a href="https://taosky.github.io/tag/ZYpzKjfn5/" class="post-tags">
+                            # DNS
+                        </a>
+                    
+                        <a href="https://taosky.github.io/tag/iuCOXrjGMU/" class="post-tags">
+                            # Hosts
+                        </a>
+                    
+                        <a href="https://taosky.github.io/tag/lpkV5_MBRF/" class="post-tags">
+                            # GFW
+                        </a>
+                    
+                </div>
+                
+                <div class="post-content">
+                    <h2 id="功能">功能</h2>
+<h3 id="支持通配符和正则的hosts">支持通配符和正则的hosts</h3>
+<p>windows 的host不能支持通配符而导致一些域名不能得到匹配，如youtube视频的*.googlevideo.com(前面的一串会更新)。</p>
+<p>这个可以用来过墙和屏蔽广告。</p>
+<h3 id="用于局域网dns解析">用于局域网DNS解析</h3>
+<p>需要在配置文件中设定允许的IP，然后局域网其他机器设置DNS为本机器ip<br>
+不过一般局域网直接用路由器了吧。</p>
+<h3 id="节省时间">节省时间</h3>
+<p>并行转发DNS请求(据说是哪个快用哪个?)，缓存(服务停用时写入)。</p>
+<h3 id="更多功能-问题">更多功能、问题</h3>
+<p>可以查看官方的<a href="http://mayakron.altervista.org/wikibase/show.php?id=AcrylicFAQ">FAQ</a>。</p>
+<h2 id="使用">使用</h2>
+<p>先<a href="http://mayakron.altervista.org/wikibase/show.php?id=AcrylicHome">下载</a>安装，便携版需要运行目录下“InstallAcrylicService.bat”手动安装服务。</p>
+<h3 id="dns设置">DNS设置</h3>
+<p>修改&quot;AcrylicConfiguration.ini&quot;中dns（默认是谷歌的，国内用不了）</p>
+<pre><code>PrimaryServerAddress=223.5.5.5
+...
+...
+...
+SecondaryServerAddress=223.6.6.6
+</code></pre>
+<p>可以添加更多</p>
+<h3 id="acrylichosts修改">AcrylicHosts修改</h3>
+<p>目录下&quot;AcrylicHosts.txt&quot;</p>
+<p><a href="https://pan.baidu.com/s/1pLtmrvd">自用 hosts下载</a></p>
+<p>说明：</p>
+<ul>
+<li>sni服务器来自 https://github.com/fengixng/google-hosts</li>
+<li>hosts修改自 https://github.com/racaljk/hosts</li>
+</ul>
+<h3 id="重启服务并修改网络连接">重启服务并修改网络连接</h3>
+<p>运行&quot;RestartAcrylicService.bat&quot;重启服务，更改适配器设置中设定当前网络DNS服务器为127.0.0.1。</p>
+<h3 id="注意">注意</h3>
+<p>被屏蔽网站需要https访问。</p>
+<p>chrome可以参考<a href="https://serve.netsh.org/serving/html/suggestions-for-google-hosts.html">这里</a></p>
+<p>firefox 可以使用SmartHTTPS 扩展</p>
+<p>在我电脑上有个小问题，firefox下播放youtube视频很容易错误，chrome下完全正常。。。</p>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://taosky.github.io/post/firefox-no-flash/" class="post-title gt-a-link">
+                    Firefox告别Flash（配合you-get观看下载在线视频）
+                </a>
+            </div>
+        
+
+        
+
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first">只能告诉你 要多想</div>
+    <div class="social-container">
+        
+            
+                <a href="https://github.com/Taosky" target="_blank">
+                    <i class="fab fa-github gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        <span><i class="iconfont reco-copyright"></i> <a><span>2014-</span>
+        2020
+        &nbsp
+        <span>Taosky</span></a></span>
+    </div>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+    </div>
+</div>
+</body>
+</html>

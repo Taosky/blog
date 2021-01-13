@@ -1,0 +1,291 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+<meta name="description" content=""/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>切换至Caddy2  | 某不科学的博客</title>
+
+<link rel="shortcut icon" href="https://taosky.github.io/favicon.ico?v=1610545653304">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://taosky.github.io/styles/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dart.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-56540702-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+        gtag('config', 'UA-56540702-2');
+    </script>
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <div class="navbar-brand">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first">
+            某不科学的博客
+        </div>
+    </div>
+    
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+                <div class="nav-item">
+                    
+                        <a href="/" class="menu gt-a-link">
+                            首页
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/tags" class="menu gt-a-link">
+                            标签
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/archives" class="menu gt-a-link">
+                            归档
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/friends" class="menu gt-a-link">
+                            友链
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/about" class="menu gt-a-link">
+                            留言
+                        </a>
+                    
+                </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1610545653304" action="/search/index.html">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    切换至Caddy2 
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2021-01-10 ·
+                    </time>
+                    
+                        <a href="https://taosky.github.io/tag/caddy/" class="post-tags">
+                            # Caddy
+                        </a>
+                    
+                        <a href="https://taosky.github.io/tag/webdav/" class="post-tags">
+                            # WebDAV
+                        </a>
+                    
+                </div>
+                
+                <div class="post-content">
+                    <p>原来用的Caddy1，后来发现官网上只有新的2.0的二进制文件了，不过原来用的1.0的也能用就没换。最近Caddy服务重启的时候总是很慢，kill -10重载配置也没反应，体验很差，就索性换成Caddy2了。</p>
+<!--more-->
+<h2 id="安装">安装</h2>
+<h3 id="二进制文件">二进制文件</h3>
+<p><a href="https://caddyserver.com/download">官网</a>下载，简单粗暴。可以勾选各种额外功能包，我选了<code>caddy-webdav</code>用来做webdav文件管理，<code>cloudflare</code>用于申请tls证书（后来实测没用）。最后选择平台下载。</p>
+<h3 id="linux服务">Linux服务</h3>
+<p>参见官方文档的<a href="https://caddyserver.com/docs/install#linux-service">Linux service</a>。<br>
+二进制文件放到<code>/usr/bin</code></p>
+<p>创建一个<code>caddy</code>组和用户专门运行这个服务:</p>
+<pre><code class="language-shell">sudo groupadd --system caddy
+</code></pre>
+<pre><code class="language-shell">sudo useradd --system \
+    --gid caddy \
+    --create-home \
+    --home-dir /var/lib/caddy \
+    --shell /usr/sbin/nologin \
+    --comment &quot;Caddy web server&quot; \
+    caddy
+</code></pre>
+<p>选择官方的服务配置文件下载，Caddy2有两种配置方法，一种是<code>API模式</code>，另一种是和原来比较相似的<code>Caddyfile配置</code>，我选的后者，修改和维护比较方便，<a href="https://github.com/caddyserver/dist/blob/master/init/caddy.service">caddy.service</a></p>
+<p>保存到<code>/etc/systemd/system/caddy.service</code></p>
+<p>重载服务配置</p>
+<pre><code class="language-shell">sudo systemctl daemon-reload
+</code></pre>
+<p>启动并查看caddy运行状况</p>
+<pre><code class="language-shell">sudo systemctl start caddy
+sudo systemctl status caddy
+</code></pre>
+<h2 id="配置">配置</h2>
+<p>配置部分比较麻烦，特别是看到官方的文档以后...直接使用以前的配置是完全不行的。</p>
+<h3 id="配置结构">配置结构</h3>
+<p>配置默认还是以一个<code>Caddyfile</code>作为入口，存放主要的全局配置等内容；像<code>nginx</code>一样引入子配置，每个站点单独配置，易于管理。</p>
+<pre><code>/etc/caddy/Caddyfile
+/etc/caddy/site1.xxx.xx.caddy
+/etc/caddy/site2.yyy.xx.caddy
+</code></pre>
+<p>下面是一个<code>Caddyfile</code>的例子</p>
+<pre><code>{
+    auto_https off
+    http_port 1984
+    https_port 1989
+}
+
+(COMMON_CONFIG) {
+    encode zstd gzip
+}
+
+(SITE_XXX_XX_TLS) {
+    tls  /etc/letsencrypt/live/XXX.XX/fullchain.pem /etc/letsencrypt/live/XXX.XX/privkey.pem
+    protocols tls1.2 tls1.3
+}
+
+import /etc/caddy/*.caddy
+</code></pre>
+<p>第一段<code>{}</code>代表的是全局选项，我这里修改了默认的http和https端口，关闭自动https。更多设置见官方文档<a href="https://caddyserver.com/docs/caddyfile/options">Global options</a></p>
+<p>后面两段可以认为是具有命名的配置片段，如<code>COMMON_CONFIG</code>就是一个命名，在<code>Caddyfile</code>和其它<code>*.caddy</code>文件中可以插入。<code>SITE_XXX_XX_TLS</code>内配置了TLS协议和证书，这里申请的是泛域名证书，我就可以在同一主域下的所有配置文件中通过<code>import SITE_XXX_XX_TLS</code>插入，不必重复写一长串。</p>
+<p>最后<code>import /etc/caddy/*.caddy</code>即是引入具体站点配置。</p>
+<pre><code>https://abc.xxx.xx:4399 {
+    import COMMON_CONFIG
+    import SITE_XXX_XX_TLS
+
+    reverse_proxy http://127.0.0.1:1234
+}
+
+
+</code></pre>
+<p>这是一个简单的反向代理的配置，这里结构和<code>caddy1</code>差不多，通过<code>import COMMON_CONFIG</code>和<code>import SITE_XXX_XX_TLS</code>引入<code>Caddyfile</code>内的配置片段，<code>reverse_proxy</code>就是之前的<code>proxy</code>。这样一个简单的配置就完成了，可以试着重启<code>caddy</code>。</p>
+<h3 id="webdav和file_server">webdav和file_server</h3>
+<p>我这个web页面主要是用于访问文件，要用到webdav和file_sever。</p>
+<pre><code> webdav /webdav/* {
+            root /mnt/M/share/
+            prefix /webdav
+        }
+</code></pre>
+<p><code>webdav</code>后面代表匹配的路径，在访问<code>/webdav/xxx</code>这类子路径时生效，<code>root</code>代表文件系统路径，<code>prefix</code>前缀用于修正访问文件目录的路径，比如访问<code>/webdav/img/1.png</code>，如果没有设置<code>prefix</code>，默认就会去文件系统访问<code>/mnt/M/share/webdav/img/1.png</code>，加上<code>prefix</code>参数，系统就会知道访问路径开头的<code>/webdav</code>是需要去掉的。</p>
+<p>这个<code>webdav</code>不能像<code>caddy1</code>一样设置只读，所以只能通过配置要访问的文件对运行服务的<code>caddy</code>用户的读写权限实现。</p>
+<pre><code>root * /mnt/M
+file_server /share/* browse
+</code></pre>
+<p><code>file_server</code>需要设置<code>root</code>'根目录'，<code>file_server</code>后面的 <code>/share/*</code> 即是匹配路径，也是文件系统的相对路径，这里把<code>/mnt/M</code>设为根目录，访问<code>/share/XXX</code>时会去访问文件系统的<code>/mnt/M/share/XXX</code>，<code>browse</code>参数会在访问时显示默认的页面，方便检索，这个页面和<code>caddy1</code>的<code>browse</code>是一样的。</p>
+<p>因为匹配路径的问题，默认访问<code>/share</code> 及<code>/webdav</code>会404，使用<code>redir /share /share/</code>重定向可以解决。</p>
+<p>当<code>file_server</code>和<code>webdav</code>同时使用时，需要加上<a href="https://caddyserver.com/docs/caddyfile/directives/route#route">route</a>，原因不太清楚。</p>
+<pre><code>route {
+    webdav /webdav/* {
+        root /mnt/M/share/
+        prefix /webdav
+    }
+}
+
+root * /mnt/M
+file_server /share/* browse
+</code></pre>
+<h3 id="basicauth">basicauth</h3>
+<p>这个主要是配置里面的密码从明文变成了哈希串的base64编码，并可以设置哈希算法（默认是bcrypt）。<br>
+在线计算<a href="https://www.jisuan.mobi/p163u3BN66Hm6JWx.html">生成bcrypt</a>，再进行<a href="https://tool.oschina.net/encrypt?type=3">base64编码</a>，就是需要填入配置中的密码。</p>
+<p>如密码<code>github</code>得到的结果可能是<code>JDJhJDEwJHpranZHRmliampldDgzaGRyc1B1cWVteHhnWUNic0xvU0VTaHg3RERJY0JYekxLWW5lbEND</code></p>
+<pre><code> basicauth /share/* {
+            git DJhJDEwJHpranZHRmliampldDgzaGRyc1B1cWVteHhnWUNic0xvU0VTaHg3RERJY0JYekxLWW5lbEND
+        }
+</code></pre>
+<h3 id="tls">tls</h3>
+<p>因为不是标准端口的网站，没办法用文件的方式自动申请证书。一开始用<code>cloudflare</code>模块，试了很久不行，总是提示在后台申请证书，没个结果。后来还是用<a href="https://certbot.eff.org/">certbot</a>搞定了，手动在配置中指定泛域名证书，也挺方便的。</p>
+<h2 id="参考">参考</h2>
+<p><a href="https://caddyserver.com/docs/">Caddy Documentation</a><br>
+<a href="https://mritd.com/2021/01/07/lets-start-using-caddy2/">Caddy2 简明教程 </a></p>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://taosky.github.io/post/virtual-qunhui-photos-backup/" class="post-title gt-a-link">
+                    NAS系列：OMV使用虚拟群晖备份照片
+                </a>
+            </div>
+        
+
+        
+
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first">只能告诉你 要多想</div>
+    <div class="social-container">
+        
+            
+                <a href="https://github.com/Taosky" target="_blank">
+                    <i class="fab fa-github gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        <span><i class="iconfont reco-copyright"></i> <a><span>2014-</span>
+        2020
+        &nbsp
+        <span>Taosky</span></a></span>
+    </div>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+    </div>
+</div>
+</body>
+</html>

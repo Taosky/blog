@@ -1,0 +1,237 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+<meta name="description" content=""/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>NAS系列：OMV5（Debian 10）安装使用VirtualBox | 某不科学的博客</title>
+
+<link rel="shortcut icon" href="https://taosky.github.io/favicon.ico?v=1610545653304">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://taosky.github.io/styles/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dart.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-56540702-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+        gtag('config', 'UA-56540702-2');
+    </script>
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <div class="navbar-brand">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first">
+            某不科学的博客
+        </div>
+    </div>
+    
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+                <div class="nav-item">
+                    
+                        <a href="/" class="menu gt-a-link">
+                            首页
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/tags" class="menu gt-a-link">
+                            标签
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/archives" class="menu gt-a-link">
+                            归档
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/friends" class="menu gt-a-link">
+                            友链
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/about" class="menu gt-a-link">
+                            留言
+                        </a>
+                    
+                </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1610545653304" action="/search/index.html">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    NAS系列：OMV5（Debian 10）安装使用VirtualBox
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2020-10-02 ·
+                    </time>
+                    
+                        <a href="https://taosky.github.io/tag/omv/" class="post-tags">
+                            # OMV
+                        </a>
+                    
+                        <a href="https://taosky.github.io/tag/virtualbox/" class="post-tags">
+                            # VirtualBox
+                        </a>
+                    
+                        <a href="https://taosky.github.io/tag/debian/" class="post-tags">
+                            # Debian
+                        </a>
+                    
+                        <a href="https://taosky.github.io/tag/nas/" class="post-tags">
+                            # NAS
+                        </a>
+                    
+                </div>
+                
+                <div class="post-content">
+                    <p>由于操作偏差，蜗牛上的OMV4系统几乎不能用了，于是重新安装了OMV5系统。之前用的VirtualBox的插件运行虚拟群晖来管理，OMV5就无法安装这个插件了，但是可以在Debian直接安装VirtualBox，并利用远程桌面和命令进行管理。</p>
+<!-- more -->
+<h2 id="安装启动">安装启动</h2>
+<p>下载官方适用于Debian10的安装包<br>
+<code>wget https://download.virtualbox.org/virtualbox/6.1.14/virtualbox-6.1_6.1.14-140239\~Debian\~buster_amd64.deb</code></p>
+<p>安装<br>
+<code>sudo dpkg -i virtualbox-6.1_6.1.14-140239\~Debian\~buster_amd64.deb</code></p>
+<p>出现错误提示，部分依赖由于冲突不能安装，这时候使用提示的fix命令安装即可。</p>
+<h2 id="桌面启动管理">桌面启动管理</h2>
+<p>单纯用命令的话太麻烦，安装<code>xfce4</code> 和 <code>vnc4server</code>，实现远程桌面管理<br>
+<code>sudo apt-get -y install xfce4 xrdp vnc4server xfce4-terminal</code></p>
+<p>新建配置文件，指定启动桌面xfce4<br>
+<code>echo xfce4-session&gt;.xsession</code></p>
+<p>重启系统，使用远程桌面连接，选择xvnc。<br>
+<img src="https://taosky.github.io/post-images/1601639714491.png" alt="" loading="lazy"></p>
+<p>登录后可能出现中文字体错误的情况，可以复制Windows系统<code>C:\Windows\Fonts</code>内的中文字体到<code>/usr/local/share/fonts</code>内，重新连接桌面即可。</p>
+<p>桌面右击启动终端，<code>virtualbox</code>启动，即可进行虚拟机管理。<br>
+<img src="https://taosky.github.io/post-images/1601639982594.png" alt="" loading="lazy"></p>
+<h2 id="命令行启动">命令行启动</h2>
+<p>每次开机要远程桌面启动虚拟机很麻烦，可以用命令行模式启动。</p>
+<p>列出虚拟机<code>vboxmanage list vms</code><br>
+<img src="https://taosky.github.io/post-images/1601640246424.png" alt="" loading="lazy"></p>
+<p>无头模式启动（这条命令是持续性的）<br>
+<code>VBoxHeadless -startvm &quot;QunHui&quot;</code></p>
+<p>查看是否启动<code>VBoxManage list runningvms</code><br>
+<img src="https://taosky.github.io/post-images/1601640313299.png" alt="" loading="lazy"></p>
+<p>创建服务'sudo vim /etc/systemd/system/vbox_machine.service'</p>
+<pre><code class="language-service">[Unit]
+Description=Virtualbox QunHui
+After=network.target
+
+[Service]
+User=你的用户名
+ExecStart=/usr/bin/VBoxHeadless -startvm &quot;QunHui&quot;
+
+[Install]
+WantedBy=multi-user.target
+</code></pre>
+<p>加载、启动、设为开机启动<br>
+<code>sudo systemctl daemon-reload</code><br>
+<code>sudo systemctl start vbox_machine</code><br>
+<code>sudo systemctl enable vbox_machine</code></p>
+<p>这样虚拟机就搞定了，下一篇会讲下如何用虚拟群晖NFS挂载硬盘进行照片的管理备份。</p>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://taosky.github.io/post/transmission-rw-permission/" class="post-title gt-a-link">
+                    NAS系列：Transmission读写权限问题
+                </a>
+            </div>
+        
+
+        
+
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first">只能告诉你 要多想</div>
+    <div class="social-container">
+        
+            
+                <a href="https://github.com/Taosky" target="_blank">
+                    <i class="fab fa-github gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        <span><i class="iconfont reco-copyright"></i> <a><span>2014-</span>
+        2020
+        &nbsp
+        <span>Taosky</span></a></span>
+    </div>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+    </div>
+</div>
+</body>
+</html>

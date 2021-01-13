@@ -1,0 +1,255 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+<meta name="description" content=""/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>HomeAssistant分组&amp;自定义&amp;Custom UI | 某不科学的博客</title>
+
+<link rel="shortcut icon" href="https://taosky.github.io/favicon.ico?v=1610545653304">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://taosky.github.io/styles/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dart.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-56540702-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+        gtag('config', 'UA-56540702-2');
+    </script>
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <div class="navbar-brand">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first">
+            某不科学的博客
+        </div>
+    </div>
+    
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+                <div class="nav-item">
+                    
+                        <a href="/" class="menu gt-a-link">
+                            首页
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/tags" class="menu gt-a-link">
+                            标签
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/archives" class="menu gt-a-link">
+                            归档
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/friends" class="menu gt-a-link">
+                            友链
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/about" class="menu gt-a-link">
+                            留言
+                        </a>
+                    
+                </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1610545653304" action="/search/index.html">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    HomeAssistant分组&amp;自定义&amp;Custom UI
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2018-07-29 ·
+                    </time>
+                    
+                        <a href="https://taosky.github.io/tag/QcyqZ1Q8u/" class="post-tags">
+                            # Home Assistant
+                        </a>
+                    
+                        <a href="https://taosky.github.io/tag/jeCxJml2y-/" class="post-tags">
+                            # 智能家居
+                        </a>
+                    
+                </div>
+                
+                <div class="post-content">
+                    <p>所谓分组就是把不同设备聚到一起，比如卧室、客厅这样的分组，可以直接开关整个分组；自定义就是设置设备（实体）、组的参数，之前提到的<code>hide in homebridge</code>也算是；Custom UI起到修改UI的作用，可以丰富信息展示，一般先安装<a href="https://github.com/andrey-git/home-assistant-custom-ui">这个</a>。</p>
+<h2 id="分组">分组</h2>
+<p>官方文档在<a href="https://www.home-assistant.io/components/group/">这里</a>。</p>
+<p>最简单的就是在配置目录下的<code>groups.yaml</code>中添加。</p>
+<pre><code class="language-yaml">raspberrypi:
+  name: 树莓派
+  view: no
+  entities:
+    - sensor.pi_temp
+    - sensor.memory_use
+    - sensor.memory_use_percent
+    - sensor.disk_use_
+    - sensor.disk_use_percent_
+    - sensor.ssl_certificate_expiry
+    - sensor.since_last_boot_templated
+</code></pre>
+<p>例如这里我添加了一个名为树莓派的组，<code>view</code>是指产生一个分页，否则是以一个卡片展示的。<br>
+<img src="https://taosky.github.io/post-images/homeassistant-4/1.png" alt="" loading="lazy"><br>
+<img src="https://taosky.github.io/post-images/homeassistant-4/2.png" alt="" loading="lazy"></p>
+<p>分组中可以再添加分组，可以点击弹出。在<code>entities</code>中添加<code>- groups.xxx</code>即可。</p>
+<p>分组修改后，可以直接从浏览器端<code>配置-通用-重载分组</code>来刷新页面。</p>
+<h2 id="自定义">自定义</h2>
+<p>自定义位于<code>customize.yaml</code>，可以修改文件，也可以浏览器端<code>配置-自定义</code>来修改，最基本的有设置图标、名字，不同的组件参数是不一样的。下面会提到配合Custom UI的一些操作。</p>
+<h2 id="custom-ui">Custom-UI</h2>
+<p>目前我用到的也就是显示额外的Badge和额外的文字，<a href="https://github.com/andrey-git/home-assistant-custom-ui/blob/master/docs/features.md#badges-in-state-cards">这里</a>有写到Custom UI的功能。</p>
+<h3 id="安装">安装</h3>
+<p>参考<a href="https://github.com/andrey-git/home-assistant-custom-ui/blob/master/docs/installing.md#local-install">这里</a>。</p>
+<p>进入配置目录</p>
+<pre><code class="language-bash">curl -o update.sh &quot;https://raw.githubusercontent.com/andrey-git/home-assistant-custom-ui/master/update.sh?raw=true&quot;
+chmod u+x update.sh
+./update.sh
+</code></pre>
+<h3 id="激活">激活</h3>
+<p>修改<code>configuration.yaml</code>（旧版不太一样，需要参考<a href="https://github.com/andrey-git/home-assistant-custom-ui/blob/master/docs/activating.md">文档</a>）</p>
+<pre><code class="language-yaml">customizer:
+  custom_ui: local
+
+frontend:
+  extra_html_url:
+    - /local/custom_ui/state-card-custom-ui.html
+    - /local/custom_ui/state-card-weather.html
+
+  extra_html_url_es5:
+    - /local/custom_ui/state-card-custom-ui-es5.html
+    - /local/custom_ui/state-card-weather.html
+</code></pre>
+<h3 id="添加文字和badge">添加文字和Badge</h3>
+<p>修改自定义文件<code>customize.yaml</code>，关于Custom UI的操作都需要添加<code>custom_ui_state_card</code>这一行，<code>extra_data_template</code>就是文字的内容了，这里的template和之前用过的还不太一样，参考<a href="https://github.com/andrey-git/home-assistant-custom-ui/blob/master/docs/templates.md">这个</a>。</p>
+<p>这里<code>entities['sensor.memory_use']</code>获取已使用内存的实体，state就是它的状态（值），这个可以在浏览器端开发者工具下面的状态里面看到。<code>${}</code>这种应该是JS的字符串模板写法，前后可以随便加文字。</p>
+<p>sensor.memory_use_percent:<br>
+friendly_name: RAM使用率<br>
+custom_ui_state_card: state-card-custom-ui<br>
+extra_data_template: 已使用 ${entities['sensor.memory_use'].state}M</p>
+<figure data-type="image" tabindex="1"><img src="https://taosky.github.io/post-images/homeassistant-4/3.png" alt="" loading="lazy"></figure>
+<p>下面这个是给开关加上上次变化时间和开关温度，显示上次变化时间只需要加入<code>show_last_changed: true</code>就可以了，<code>extra_badge</code>可以用开关自身的属性（attribute），也可以是<code>entity_id: sensor.xxxx</code>，显示别的传感器数值。</p>
+<pre><code class="language-yaml">switch.xiaomi_switch_two:
+  friendly_name: 台灯
+  custom_ui_state_card: state-card-custom-ui
+  show_last_changed: true
+  extra_badge:
+    attribute: temperature
+    unit: °C
+
+</code></pre>
+<figure data-type="image" tabindex="2"><img src="https://taosky.github.io/post-images/homeassistant-4/4.png" alt="" loading="lazy"></figure>
+<h2 id="参考">参考</h2>
+<p>https://github.com/andrey-git/home-assistant-custom-ui/blob/master/docs/installing.md#local-install<br>
+https://github.com/andrey-git/home-assistant-custom-ui/blob/master/docs/activating.md<br>
+https://github.com/andrey-git/home-assistant-custom-ui/blob/master/docs/features.md</p>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://taosky.github.io/post/homeassistant-3/" class="post-title gt-a-link">
+                    HomeAssistant设备接入
+                </a>
+            </div>
+        
+
+        
+
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first">只能告诉你 要多想</div>
+    <div class="social-container">
+        
+            
+                <a href="https://github.com/Taosky" target="_blank">
+                    <i class="fab fa-github gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        <span><i class="iconfont reco-copyright"></i> <a><span>2014-</span>
+        2020
+        &nbsp
+        <span>Taosky</span></a></span>
+    </div>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+    </div>
+</div>
+</body>
+</html>

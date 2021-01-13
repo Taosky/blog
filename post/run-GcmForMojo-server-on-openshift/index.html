@@ -1,0 +1,273 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+<meta name="description" content=""/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>在openshift(旧版)上运行GcmForMojo服务端 | 某不科学的博客</title>
+
+<link rel="shortcut icon" href="https://taosky.github.io/favicon.ico?v=1610545653304">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://taosky.github.io/styles/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dart.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-56540702-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+        gtag('config', 'UA-56540702-2');
+    </script>
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <div class="navbar-brand">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first">
+            某不科学的博客
+        </div>
+    </div>
+    
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+                <div class="nav-item">
+                    
+                        <a href="/" class="menu gt-a-link">
+                            首页
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/tags" class="menu gt-a-link">
+                            标签
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/archives" class="menu gt-a-link">
+                            归档
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/friends" class="menu gt-a-link">
+                            友链
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/about" class="menu gt-a-link">
+                            留言
+                        </a>
+                    
+                </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1610545653304" action="/search/index.html">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    在openshift(旧版)上运行GcmForMojo服务端
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2017-01-29 ·
+                    </time>
+                    
+                        <a href="https://taosky.github.io/tag/FLcAbLEe-/" class="post-tags">
+                            # Openshift
+                        </a>
+                    
+                        <a href="https://taosky.github.io/tag/WZM77rseKI/" class="post-tags">
+                            # Android
+                        </a>
+                    
+                        <a href="https://taosky.github.io/tag/4mma1WyKu_5/" class="post-tags">
+                            # 微信
+                        </a>
+                    
+                </div>
+                
+                <div class="post-content">
+                    <p><em><strong>2017-02-03更新:</strong></em>  openshift 不能开其他端口导致发消息的插件不能加载，App上登录扫码停止等事件通知好像也有问题，还是用Arukas的免费docker比较好(镜像：'rastasheep/ubuntu-sshd',需要安装'make'以及'libssl-dev'再安装模块)</p>
+<p><a href="http://www.coolapk.com/apk/com.swjtu.gcmformojo">GcmForMojo</a> 是一个微信或QQ消息推送(谷歌的FCM推送方案)APP。</p>
+<p>简单的说是通过服务器登录发送接收到的聊天消息到谷歌服务器，接着推送到App，实现类似苹果的云推送，不用打开app也能收到消息。</p>
+<p>由于需要服务器搭建服务端，特地买个VPS来搭服务端的话太浪费了，自己电脑啥的终究有点麻烦且不是长久之计，于是尝试了openshift发现很适合。</p>
+<p>本教程使用Ubuntu虚拟机(之前写Windows教程发现很多麻烦问题)</p>
+<p>写的有点罗嗦，排版也不太好，还请见谅。</p>
+<h2 id="注册">注册</h2>
+<p>新注册的帐号是新的控制台，现在还不知道怎么搞<br>
+(╯-_-)╯~┴—┴</p>
+<p>旧版往下看</p>
+<h2 id="添加应用及公钥">添加应用及公钥</h2>
+<h3 id="添加应用">添加应用</h3>
+<p>登录Web控制台后添加应用(Add Application)，找到&quot;Perl 5.1.0&quot;</p>
+<figure data-type="image" tabindex="1"><img src="https://taosky.github.io/post-images/run-GcmForMojo-server-on-openshift/1.png" alt="" loading="lazy"></figure>
+<p>然后这些东西都不用改直接 点创建应用(Create Application)。</p>
+<h3 id="添加公钥">添加公钥</h3>
+<p>Ubuntu终端下ssh-keygen 生成密钥对，一路回车。</p>
+<figure data-type="image" tabindex="2"><img src="https://taosky.github.io/post-images/run-GcmForMojo-server-on-openshift/2.png" alt="" loading="lazy"></figure>
+<p>打印并复制公钥</p>
+<figure data-type="image" tabindex="3"><img src="https://taosky.github.io/post-images/run-GcmForMojo-server-on-openshift/3.png" alt="" loading="lazy"></figure>
+<p>回到openshift，进入Settings，添加公钥(Add a new key),Key name随便填，下面的框填写刚才复制的公钥。</p>
+<figure data-type="image" tabindex="4"><img src="https://taosky.github.io/post-images/run-GcmForMojo-server-on-openshift/4.png" alt="" loading="lazy"></figure>
+<p>接下来就可以连接服务器了。</p>
+<h2 id="服务端程序">服务端程序</h2>
+<h3 id="git提交程序">git提交程序</h3>
+<p>回到应用复制这个地址</p>
+<figure data-type="image" tabindex="5"><img src="https://taosky.github.io/post-images/run-GcmForMojo-server-on-openshift/5.png" alt="" loading="lazy"></figure>
+<p>终端下git clone &lt;刚才的地址&gt;<br>
+<img src="https://taosky.github.io/post-images/run-GcmForMojo-server-on-openshift/6.png" alt="" loading="lazy"></p>
+<p>先安装两个perl模块，openshift只需要将依赖的模块名写进一个文档push的时候会自动安装。</p>
+<p>进入.openshift目录，修改cpan.txt，添加两行。</p>
+<figure data-type="image" tabindex="6"><img src="https://taosky.github.io/post-images/run-GcmForMojo-server-on-openshift/7.png" alt="" loading="lazy"></figure>
+<pre><code>Mojo::Weixin
+Mojo::Webqq
+</code></pre>
+<p>接着写一个用以运行的perl程序(以微信为例，记得修改其中的令牌ID)</p>
+<figure data-type="image" tabindex="7"><img src="https://taosky.github.io/post-images/run-GcmForMojo-server-on-openshift/8.png" alt="" loading="lazy"></figure>
+<pre><code class="language-perl">    use Mojo::Weixin;
+
+    $tmpdir_dir = './';
+    $qrcode_path = $tmpdir_dir.'weixin.png';
+
+    my $client = Mojo::Weixin-&gt;new(
+        tmpdir=&gt;$tmpdir_dir,
+        cookie_dir=&gt;$tmpdir_dir,
+        qrcode_path=&gt;$qrcode_path,
+    );
+
+    print &quot;Logining.../nIf No Succeed Info in 5s Please Scan QRCode/n&quot;;
+    $client-&gt;on(login=&gt;sub{
+        print &quot;/nLogin Succeed/n&quot;;
+    });
+    $client-&gt;on(ready=&gt;sub{
+        print &quot;WebWeiXin OK/n&quot;;
+        unlink($qrcode_path);
+    });
+
+    $client-&gt;load(&quot;ShowMsg&quot;);$client-&gt;load(&quot;GCM&quot;,data=&gt;{
+        api_url =&gt; 'https://gcm-http.googleapis.com/gcm/send',
+        api_key=&gt;'AIzaSyB18io0hduB_3uHxKD3XaebPCecug27ht8',
+        registration_ids=&gt;[&quot;这里填写你的令牌ID(手机App显示令牌)&quot;],
+    });
+
+    $client-&gt;run();
+</code></pre>
+<p>然后提交到服务器</p>
+<pre><code class="language-bash">    git add .
+    git commit -m &quot;first commit&quot;
+    git push
+</code></pre>
+<figure data-type="image" tabindex="8"><img src="https://taosky.github.io/post-images/run-GcmForMojo-server-on-openshift/9.png" alt="" loading="lazy"></figure>
+<p>第一次需要等一会儿，</p>
+<h3 id="运行程序">运行程序</h3>
+<p>ssh 连接服务器(本来想action hook直接就能运行，有点问题还得老老实实自己运行)</p>
+<figure data-type="image" tabindex="9"><img src="https://taosky.github.io/post-images/run-GcmForMojo-server-on-openshift/10.png" alt="" loading="lazy"></figure>
+<p>进入目录 nohup执行刚才放进去的程序Weixin.pl(nohup执行后再按一次回车即可后台运行)</p>
+<figure data-type="image" tabindex="10"><img src="https://taosky.github.io/post-images/run-GcmForMojo-server-on-openshift/11.png" alt="" loading="lazy"></figure>
+<p>如果是第一次登录或是cookie失效，可以用浏览器访问你的应用查看二维码并扫码登录。</p>
+<figure data-type="image" tabindex="11"><img src="https://taosky.github.io/post-images/run-GcmForMojo-server-on-openshift/12.png" alt="" loading="lazy"></figure>
+<p>nohup.out 可以查看运行日志(unicode编码)</p>
+<figure data-type="image" tabindex="12"><img src="https://taosky.github.io/post-images/run-GcmForMojo-server-on-openshift/13.png" alt="" loading="lazy"></figure>
+<p><em><strong>注意：cookie也可以获取到，所以不要将自己的地址暴露出去。也可以修改代码改变保存目录，太懒没去看文档。。。</strong></em></p>
+<p>至此应该是可以用了，可以和可爱的小冰聊天测试 ≧▽≦  。</p>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://taosky.github.io/post/instagram-album/" class="post-title gt-a-link">
+                    给博客添加instagram相册
+                </a>
+            </div>
+        
+
+        
+
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first">只能告诉你 要多想</div>
+    <div class="social-container">
+        
+            
+                <a href="https://github.com/Taosky" target="_blank">
+                    <i class="fab fa-github gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        <span><i class="iconfont reco-copyright"></i> <a><span>2014-</span>
+        2020
+        &nbsp
+        <span>Taosky</span></a></span>
+    </div>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,221 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+<meta name="description" content=""/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>树莓派Lirc红外控制空调 | 某不科学的博客</title>
+
+<link rel="shortcut icon" href="https://taosky.github.io/favicon.ico?v=1610545653304">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://taosky.github.io/styles/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dart.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-56540702-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+        gtag('config', 'UA-56540702-2');
+    </script>
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <div class="navbar-brand">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first">
+            某不科学的博客
+        </div>
+    </div>
+    
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+                <div class="nav-item">
+                    
+                        <a href="/" class="menu gt-a-link">
+                            首页
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/tags" class="menu gt-a-link">
+                            标签
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/archives" class="menu gt-a-link">
+                            归档
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/friends" class="menu gt-a-link">
+                            友链
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/about" class="menu gt-a-link">
+                            留言
+                        </a>
+                    
+                </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1610545653304" action="/search/index.html">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    树莓派Lirc红外控制空调
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2018-08-03 ·
+                    </time>
+                    
+                        <a href="https://taosky.github.io/tag/xM91c89VU/" class="post-tags">
+                            # LIRC
+                        </a>
+                    
+                        <a href="https://taosky.github.io/tag/QxU2xQq8NW/" class="post-tags">
+                            # 树莓派
+                        </a>
+                    
+                </div>
+                
+                <div class="post-content">
+                    <p>经过满长的爬坑，终于成功用lirc控制空调，最终是为HomeAssistant服务的。</p>
+<hr>
+<h2 id="准备">准备</h2>
+<p>用到的硬件就下面这些。</p>
+<ol>
+<li>树莓派Zero W （RASPBIAN STRETCH）</li>
+<li>红外接收模块（HX1838）</li>
+<li>红外发射模块</li>
+<li>若干杜邦线</li>
+</ol>
+<p>顺便把马老板家红外模块链接放上，买电子元件什么的也是要看运气。<br>
+http://dwz.cn/hEALZbR1<br>
+http://dwz.cn/kZu5T03F</p>
+<p>安装Lirc <code>sudo apt install lirc</code>，这里用的是STRETCH版的系统，lirc版本应该是0.94c+，旧版不太一样，本文仅针对新版。</p>
+<p>修改启动配置<code>sudo vim /boot/config.txt</code>，修改<code>#dtoverlay=lirc-rpi</code>这行为</p>
+<p><code>dtoverlay=lirc-rpi,gpio_in_pin=18,gpio_out_pin=17</code></p>
+<p>重启系统，lirc模块就被加载了</p>
+<h2 id="接线">接线</h2>
+<p>安装gpiozero库，使用<code>pinout</code>查看树莓派管脚。</p>
+<p><code>sudo apt install python3-gpiozero</code><br>
+<code>pinout</code></p>
+<figure data-type="image" tabindex="1"><img src="https://taosky.github.io/post-images/pi-lirc-aircon-control/1.png" alt="" loading="lazy"></figure>
+<p>将接收模块的数据口接到GPIO18（注意不是管脚号），将VCC接到5V，GND接地。<br>
+这个模块上没有标记，最好问一下客服，我买的两家的相同的模块，客服告诉我的都不一样。。。<br>
+<img src="https://taosky.github.io/post-images/pi-lirc-aircon-control/2.jpg" alt="" loading="lazy"></p>
+<p>发送模块数据口接GPIO17，VCC接5V，GND接地。</p>
+<h2 id="录制和发射">录制和发射</h2>
+<p>本来写了很多，发现<a href="https://segmentfault.com/a/1190000014135418">这篇文章</a>讲的很详细，简单说一下。</p>
+<p>接收器是为了读取红外码，之后就不需要了，将红外码和键对应，生成Lirc配置文件，Lirc使用这个配置文件来发送相同的红外码，进而控制空调。<br>
+这里需要注意的是空调的红外码和其他设备不太一样，电视机这种'0'这个数字就对应一个代表'0'的码；而空调'27度'，对应的其实是当前的所有设置，包括风向、风速、制冷、温度这些，相当于给一个关闭的空调发送'27度'，就同时打开了空调，设置好了所有这些对应参数。因为它的特殊性，不能用lirc自带的工具录制，需要手动将复制到配置文件里面。</p>
+<p>第一次发射的时候，空调没有反应，拖着排插按到空调上才成功，后面发现对准的话一两米也没有问题，最后固定在书架上对着空调的接收口。</p>
+<p>发射的操作很简单，就是一条命令，通过其他程序调用，就产生了很多应用方案了，下一篇会说明如何整合到HomeAssistant。</p>
+<h2 id="参考">参考</h2>
+<p>https://segmentfault.com/a/1190000014135418<br>
+http://jeffssss.github.io/%E6%A0%91%E8%8E%93%E6%B4%BE/2017/07/23/re-use-siri-turn-on-air-condition.html</p>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://taosky.github.io/post/homeassistant-5/" class="post-title gt-a-link">
+                    HomeAssistant脚本&amp;自动化&amp;Package
+                </a>
+            </div>
+        
+
+        
+
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first">只能告诉你 要多想</div>
+    <div class="social-container">
+        
+            
+                <a href="https://github.com/Taosky" target="_blank">
+                    <i class="fab fa-github gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        <span><i class="iconfont reco-copyright"></i> <a><span>2014-</span>
+        2020
+        &nbsp
+        <span>Taosky</span></a></span>
+    </div>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+    </div>
+</div>
+</body>
+</html>

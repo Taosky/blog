@@ -1,0 +1,298 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+<meta name="description" content=""/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>HomeAssistant设备接入 | 某不科学的博客</title>
+
+<link rel="shortcut icon" href="https://taosky.github.io/favicon.ico?v=1610545653304">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://taosky.github.io/styles/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dart.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-56540702-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+        gtag('config', 'UA-56540702-2');
+    </script>
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <div class="navbar-brand">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first">
+            某不科学的博客
+        </div>
+    </div>
+    
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+                <div class="nav-item">
+                    
+                        <a href="/" class="menu gt-a-link">
+                            首页
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/tags" class="menu gt-a-link">
+                            标签
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/archives" class="menu gt-a-link">
+                            归档
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/friends" class="menu gt-a-link">
+                            友链
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/about" class="menu gt-a-link">
+                            留言
+                        </a>
+                    
+                </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1610545653304" action="/search/index.html">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    HomeAssistant设备接入
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2018-07-27 ·
+                    </time>
+                    
+                        <a href="https://taosky.github.io/tag/QcyqZ1Q8u/" class="post-tags">
+                            # Home Assistant
+                        </a>
+                    
+                        <a href="https://taosky.github.io/tag/jeCxJml2y-/" class="post-tags">
+                            # 智能家居
+                        </a>
+                    
+                </div>
+                
+                <div class="post-content">
+                    <p>HomeAssistant设备接入功能其实很强大，能想到的几乎都能办到，不局限于智能硬件，当然也需要很强的动手能力。<br>
+简单介绍下我用到的一些“设备”的接入，只是接入的话，显示出来很杂乱，下一篇会讲到怎么整理。</p>
+<h2 id="小米智能开关基础版">小米智能开关基础版</h2>
+<p>因为拿到手是没有配置wifi接入的，需要下载米家App按步骤配置好。</p>
+<p>获取token，尝试了<code>miio --discover</code>并不行，需要有root权限的模拟器或者root权限的android手机，参考https://home-assistant.cc/component/xiaomi/wifi/</p>
+<p>然后就可以在配置文件里加上switch。</p>
+<pre><code class="language-yaml">switch:
+  - platform: xiaomi_miio
+    name: Xiaomi Switch One
+    host: 192.168.2.196
+    token: e0c4ff4f**************
+</code></pre>
+<p>如果不再使用米家App可以在路由器屏蔽这两个设备访问外网，也许可以保护隐私吧。</p>
+<h2 id="padavan固件路由器">Padavan固件路由器</h2>
+<p><del>发现更新不及时，而且对路由器登录请求太多，更换了**<a href="https://www.home-assistant.io/components/device_tracker.nmap_tracker/">nmap_tracker</a>**（需安装nmap）方式，还可以设置排除的ip，就不会把树莓派、智能设备加进去了，还有个好处就是如果接入了多个网络，可以扫描多个网络的设备。</del><br>
+会有断断续续的情况，还是弃用了。</p>
+<hr>
+<p>某不要钱倒闭路由器刷的Padavan，Padavan基于华硕固件，但使用自带的asuswrt读不到<code>/var/lib/misc/dnsmasq.leases</code>这个文件，其实在Padavan中的位置是<code>/tmp/dnsmasq.leases</code>。</p>
+<p>路由器设置里面开启telnet，然后telnet到路由器，建立软链接<code>ln -s /tmp/dnsmasq.leases /var/lib/misc/dnsmasq.leases</code>，这样就可以读到了。</p>
+<p>配置</p>
+<pre><code class="language-yaml">device_tracker:
+  - platform: asuswrt
+    host: 192.168.*.1
+    username: admin
+    password: ******
+    protocol: telnet
+    port: 23
+</code></pre>
+<p>在路由器后台的日志里，可以看到多次登陆，我这边密码错误，原因不明，但是可以正常使用。</p>
+<h2 id="树莓派温度">树莓派温度</h2>
+<p>这就体现出HomeAssistant的强大之处了，可以把各种数据都变成传感器设备。</p>
+<p>这里的<code>cat /sys/class/thermal/thermal_zone0/temp</code>就是打印树莓派温度值，通过模板除以1000保留一位小数获得结果。</p>
+<p><code>sensor</code>中添加</p>
+<pre><code class="language-yaml">  - platform: command_line
+    name: Pi
+    command: &quot;cat /sys/class/thermal/thermal_zone0/temp&quot;
+    unit_of_measurement: &quot;°C&quot;
+    value_template: '{{ value | multiply(0.001) | round(1) }}'
+</code></pre>
+<h2 id="温度传感器">温度传感器</h2>
+<p>和上面类似，打印命令里面过滤了结果，传感器安装参考的<a href="https://www.jianshu.com/p/42fed7f1f610">这篇文章</a>。</p>
+<p>'sensor'中添加</p>
+<pre><code class="language-yaml">  - platform: command_line
+    name: Temp
+    command: &quot;cat /sys/bus/w1/devices/28-01131650ab0a/w1_slave |grep t= | cut -d '=' -f 2&quot;
+    unit_of_measurement: &quot;°C&quot;
+    value_template: '{{ value | multiply(0.001) | round(1) }} '
+</code></pre>
+<h2 id="彩云天气">彩云天气</h2>
+<p>用到了这个文件：<a href="https://github.com/Yonsm/HAExtra/raw/master/custom_components/sensor/caiyun.py">caiyun.py</a></p>
+<p>将文件放入配置文件夹<code>/custom_components/sensor/</code>。</p>
+<p>'sensor'中添加</p>
+<pre><code class="language-yaml">  - platform: caiyun
+    name: Caiyun
+</code></pre>
+<p>这是自定义了一个传感器组件，只要会写代码，就可以创造自己的组件，获取任何信息。</p>
+<h2 id="月相">月相</h2>
+<p>（好像没啥用）</p>
+<p>这里用到了value_template，通过if语句判断，显示不同的结果，其实是对自带的<code>sensor.moon</code>进行了汉化。</p>
+<p><code>sensor</code>中添加</p>
+<pre><code class="language-yaml">  - platform: template
+    sensors:
+      moon_phase:
+        value_template: '{% if is_state(&quot;sensor.moon&quot;, &quot;New moon&quot;) %}新月{% elif is_state(&quot;sensor.moon&quot;, &quot;Waxing crescent&quot;) %}娥眉月{% elif is_state(&quot;sensor.moon&quot;, &quot;First quarter&quot;) %}上弦月{% elif is_state(&quot;sensor.moon&quot;, &quot;Waxing gibbous&quot;) %}盈凸月{% elif is_state(&quot;sensor.moon&quot;, &quot;Full moon&quot;) %}满月{% elif is_state(&quot;sensor.moon&quot;, &quot;Waning gibbous&quot;) %}亏凸月{% elif is_state(&quot;sensor.moon&quot;, &quot;Last quarter&quot;) %}下弦月{% else %}残月{% endif %}'
+        friendly_name: '月相'
+</code></pre>
+<h2 id="树莓派的信息">树莓派的信息</h2>
+<p>参考的<a href="https://www.home-assistant.io/components/sensor.systemmonitor/">官方文档</a>。</p>
+<p><code>sensor</code>中添加</p>
+<pre><code class="language-yaml">  - platform: systemmonitor
+    resources:
+      - type: disk_use
+        arg: /
+      - type: disk_use_percent
+        arg: /
+      - type: memory_use
+      - type: memory_use_percent
+      - type: since_last_boot
+      - type: last_boot
+</code></pre>
+<p>但是这个<code>since_last_boot</code>启动时间的格式很长<code>1 day, 14:37:44.809441</code>，用value_template给它格式化一下。</p>
+<p>放在月相一起，<code>- platform: template</code>里面的<code>sensors</code>下面。</p>
+<pre><code class="language-yaml">      relative_alarm_time:
+        friendly_name: '设定时间'
+        value_template: &gt;
+                       {% set relative_time =  (states.input_number.alarmhour.state|float|multiply(60) + states.input_number.alarmminutes.state|float) + (now().hour|float|multiply(60) + now().minute|float) %}
+                       {%- if relative_time &gt; 1440 -%}
+                          {{((relative_time-1920) |int |multiply(60)) | timestamp_custom(&quot;%H:%M&quot;)}}
+                        {%- else -%}
+                          {{((relative_time-480) |int |multiply(60)) | timestamp_custom(&quot;%H:%M&quot;)}}
+                       {%- endif %}
+        unit_of_measurement: &quot;min&quot;
+      since_last_boot_templated:
+        value_template: &gt;-
+          {%- set slb = states.sensor.since_last_boot.state.split(' ') -%}
+          {%- set count = slb | length -%}
+          {%- set hms = slb[count - 1] -%}
+          {%- set hms_trimmed = hms.split('.')[0] -%}
+          {%- set hms_split = hms_trimmed.split(':') -%}
+          {%- set hours = hms_split[0] | int -%}
+          
+          {%- if count == 3 -%}
+            {{ slb[0] ~ ' ' ~ slb[1] ~ ' ' }}
+          {%- endif -%}
+          {%- if hours &gt; 0 -%}
+            {%- if hours == 1 -%}
+              1 hour
+            {%- else -%}
+              {{ hours }} hours
+            {%- endif -%}
+          {%- endif -%}
+</code></pre>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://taosky.github.io/post/raspberry-pi-lirc/" class="post-title gt-a-link">
+                    树莓派lirc读取红外接收器的问题
+                </a>
+            </div>
+        
+
+        
+
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first">只能告诉你 要多想</div>
+    <div class="social-container">
+        
+            
+                <a href="https://github.com/Taosky" target="_blank">
+                    <i class="fab fa-github gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        <span><i class="iconfont reco-copyright"></i> <a><span>2014-</span>
+        2020
+        &nbsp
+        <span>Taosky</span></a></span>
+    </div>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+    </div>
+</div>
+</body>
+</html>

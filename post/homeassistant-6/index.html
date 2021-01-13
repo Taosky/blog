@@ -1,0 +1,463 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+<meta name="description" content=""/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>HomeAssistant加入空调控制（LIRC）并接入HomeKit | 某不科学的博客</title>
+
+<link rel="shortcut icon" href="https://taosky.github.io/favicon.ico?v=1610545653304">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://taosky.github.io/styles/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dart.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-56540702-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+        gtag('config', 'UA-56540702-2');
+    </script>
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <div class="navbar-brand">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first">
+            某不科学的博客
+        </div>
+    </div>
+    
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+                <div class="nav-item">
+                    
+                        <a href="/" class="menu gt-a-link">
+                            首页
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/tags" class="menu gt-a-link">
+                            标签
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/archives" class="menu gt-a-link">
+                            归档
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/friends" class="menu gt-a-link">
+                            友链
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/about" class="menu gt-a-link">
+                            留言
+                        </a>
+                    
+                </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1610545653304" action="/search/index.html">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    HomeAssistant加入空调控制（LIRC）并接入HomeKit
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2018-08-04 ·
+                    </time>
+                    
+                        <a href="https://taosky.github.io/tag/QcyqZ1Q8u/" class="post-tags">
+                            # Home Assistant
+                        </a>
+                    
+                        <a href="https://taosky.github.io/tag/xM91c89VU/" class="post-tags">
+                            # LIRC
+                        </a>
+                    
+                        <a href="https://taosky.github.io/tag/jeCxJml2y-/" class="post-tags">
+                            # 智能家居
+                        </a>
+                    
+                </div>
+                
+                <div class="post-content">
+                    <p>上一篇中已经能够成功红外控制空调，剩下的就是把它放到HomeAssistant中。</p>
+<figure data-type="image" tabindex="1"><img src="https://taosky.github.io/post-images/homeassistant-6/1.png" alt="" loading="lazy"></figure>
+<h2 id="mqtt-hvac">MQTT HVAC</h2>
+<p>最简单的方法是作为开关加入，然后运行命令，但是这样子只能控制制冷或制热，或者要加入很多开关。这样就很麻烦了，我还希望能够加入HomeKit中控制。</p>
+<p>好在HomeAssistant有个东西叫MQTT HVAC，也是属于climate，可以直接接入HomeKit。</p>
+<p>MQTT协议就相当于有两方在通信，一个是消息的接收者，一个是消息的发送者。当我们改变空调模式、温度时，消息发送到接收者，接收者去执行shell命令发送红外。大概原理就是这样，所以我们需要的是跑一个接收者的MQTT客户端。</p>
+<p>这里面url需要填写HomeAssistant密码，mode和temp两个主题可以改成自己想要的名字， <code>client.on</code>传入的回调函数就是对发过来的消息做出反应。因为HomeAssistant或HomeKit中打开空调需要先选择制冷、制热、自动，<code>if (payload === 'heat')</code>这几个if就是对于模式选择的反应，比如选择了制热就发送'制热21度'的红外码，<code>spawn('irsend', ['SEND_ONCE', 'aircon', 'heat_21'])</code>，'aircon'是lirc配置的名字，'heat_21'是红外码的名字，以此类推。</p>
+<pre><code class="language-node">#!/usr/bin/env node
+var mqtt = require('mqtt'); 
+
+var mode = 'mitsubishi/ac/mode/set'; 
+var temp = 'mitsubishi/ac/temperature/set';
+var url = 'mqtt://homeassistant:你的密码@127.0.0.1';
+var spawn = require('child_process').spawn;
+var mode0;
+
+console.log(url);
+
+var client = mqtt.connect(url); 
+
+client.subscribe(mode); 
+client.subscribe(temp);
+
+client.on('message', (topic, message) =&gt; {
+
+  const payload = message.toString()
+  
+  if (payload === 'heat') {
+    console.log(`Now Mode '${payload}'`)
+    mode0 = &quot;heat&quot;;
+    spawn('irsend', ['SEND_ONCE', 'aircon', 'heat_21'])
+  }
+  else if (payload === 'cool') {
+    console.log(`Now Mode '${payload}'`)
+    mode0 = &quot;cool&quot;
+    spawn('irsend', ['SEND_ONCE', 'aircon', 'cool_28'])
+  }
+  else if (payload === 'auto') {
+    console.log(`Now Mode '${payload}'`)
+    mode0 = &quot;auto&quot;
+    spawn('irsend', ['SEND_ONCE', 'aircon', 'off'])
+  }
+  else if (payload === 'off') {
+    console.log(`Now Mode '${payload}'`)
+    mode0 = &quot;off&quot;
+    spawn('irsend', ['SEND_ONCE', 'aircon', 'off'])
+  }
+  else if (payload === '17.0') {
+    if (mode0 === 'heat') {
+       console.log(`17.0heat`)
+       spawn('irsend', ['SEND_ONCE', 'aircon', 'heat_17'])
+       }
+    else if (mode0 === 'cool') {
+       console.log(`17.0cool`)
+       spawn('irsend', ['SEND_ONCE', 'aircon', 'cool_17'])
+       }
+    else if (mode0 === 'auto') {
+       console.log(`17.0auto`)    
+       spawn('irsend', ['SEND_ONCE', 'aircon', 'cool_17'])   
+       }
+  }
+  else if (payload === '18.0') {
+    if (mode0 === 'heat') {
+       console.log(`18.0heat`)
+       spawn('irsend', ['SEND_ONCE', 'aircon', 'heat_18'])
+       }
+    else if (mode0 === 'cool') {
+       console.log(`18.0cool`)
+       spawn('irsend', ['SEND_ONCE', 'aircon', 'cool_18'])
+       }
+    else if (mode0 === 'auto') {    
+       console.log(`18.0auto`)    
+       spawn('irsend', ['SEND_ONCE', 'aircon', 'cool_18'])   
+       }
+  }
+  else if (payload === '19.0') {
+    if (mode0 === 'heat') {
+       console.log(`19.0heat`)
+       spawn('irsend', ['SEND_ONCE', 'aircon', 'heat_19'])
+       }
+    else if (mode0 === 'cool') {
+       console.log(`19.0cool`)
+       spawn('irsend', ['SEND_ONCE', 'aircon', 'cool_19'])
+       }
+    else if (mode0 === 'auto') {    
+       console.log(`19.0auto`)    
+       spawn('irsend', ['SEND_ONCE', 'aircon', 'cool_19'])   
+       }
+  }
+  else if (payload === '20.0') {
+    if (mode0 === 'heat') {
+       console.log(`20.0heat`)
+       spawn('irsend', ['SEND_ONCE', 'aircon', 'heat_20'])
+       }
+    else if (mode0 === 'cool') {
+       console.log(`20.0cool`)
+       spawn('irsend', ['SEND_ONCE', 'aircon', 'cool_20'])
+       }
+    else if (mode0 === 'auto') {    
+       console.log(`20.0auto`)    
+       spawn('irsend', ['SEND_ONCE', 'aircon', 'cool_20'])   
+       }
+  }
+  else if (payload === '21.0') {
+    if (mode0 === 'heat') {
+       console.log(`21.0heat`)
+       spawn('irsend', ['SEND_ONCE', 'aircon', 'heat_21'])
+       }
+    else if (mode0 === 'cool') {
+       console.log(`21.0cool`)
+       spawn('irsend', ['SEND_ONCE', 'aircon', 'cool_21'])
+       }
+    else if (mode0 === 'auto') {    
+       console.log(`21.0auto`)    
+       spawn('irsend', ['SEND_ONCE', 'aircon', 'cool_21'])
+       }
+  }
+  else if (payload === '22.0') {
+    if (mode0 === 'heat') {
+       console.log(`22.0heat`)
+       spawn('irsend', ['SEND_ONCE', 'aircon', 'heat_22'])
+       }
+    else if (mode0 === 'cool') {
+       console.log(`22.0cool`)
+       spawn('irsend', ['SEND_ONCE', 'aircon', 'cool_22'])
+       }
+    else if (mode0 === 'auto') {    
+       console.log(`22.0auto`)    
+       spawn('irsend', ['SEND_ONCE', 'aircon', 'cool_22'])
+       }
+  }
+  else if (payload === '23.0') {
+    if (mode0 === 'heat') {
+       console.log(`23.0heat`)
+       spawn('irsend', ['SEND_ONCE', 'aircon', 'heat_23'])
+       }
+    else if (mode0 === 'cool') {
+       console.log(`23.0cool`)
+       spawn('irsend', ['SEND_ONCE', 'aircon', 'cool_23'])
+       }
+    else if (mode0 === 'auto') {    
+       console.log(`23.0auto`)    
+       spawn('irsend', ['SEND_ONCE', 'aircon', 'cool_23'])   
+       }
+  }
+  else if (payload === '24.0') {
+    if (mode0 === 'heat') {
+       console.log(`24.0heat`)
+       spawn('irsend', ['SEND_ONCE', 'aircon', 'heat_24'])
+       }
+    else if (mode0 === 'cool') {
+       console.log(`24.0cool`)
+       spawn('irsend', ['SEND_ONCE', 'aircon', 'cool_24'])
+       }
+    else if (mode0 === 'auto') {    
+       console.log(`24.0auto`)    
+       spawn('irsend', ['SEND_ONCE', 'aircon', 'cool_24'])   
+       }
+  }
+  else if (payload === '25.0') {
+    if (mode0 === 'heat') {
+       console.log(`25.0heat`)
+       spawn('irsend', ['SEND_ONCE', 'aircon', 'heat_25'])
+       }
+    else if (mode0 === 'cool') {
+       console.log(`25.0cool`)
+       spawn('irsend', ['SEND_ONCE', 'aircon', 'cool_25'])
+       }
+    else if (mode0 === 'auto') {    
+       console.log(`25.0auto`)    
+       spawn('irsend', ['SEND_ONCE', 'aircon', 'cool_25'])   
+       }
+  }
+  else if (payload === '26.0') {
+    if (mode0 === 'heat') {
+       console.log(`26.0heat`)
+       spawn('irsend', ['SEND_ONCE', 'aircon', 'heat_26'])
+       }
+    else if (mode0 === 'cool') {
+       console.log(`26.0cool`)
+       spawn('irsend', ['SEND_ONCE', 'aircon', 'cool_26'])
+       }
+    else if (mode0 === 'auto') {    
+       console.log(`26.0auto`)    
+       spawn('irsend', ['SEND_ONCE', 'aircon', 'cool_26'])   
+       }
+  }
+  else if (payload === '27.0') {
+    if (mode0 === 'heat') {
+       console.log(`27.0heat`)
+       spawn('irsend', ['SEND_ONCE', 'aircon', 'heat_27'])
+       }
+    else if (mode0 === 'cool') {
+       console.log(`27.0cool`)
+       spawn('irsend', ['SEND_ONCE', 'aircon', 'cool_27'])
+       }
+    else if (mode0 === 'auto') {    
+       console.log(`27.0auto`)    
+       spawn('irsend', ['SEND_ONCE', 'aircon', 'cool_27'])   
+       }
+  }
+  else if (payload === '28.0') {
+    if (mode0 === 'heat') {
+       console.log(`28.0heat`)
+       spawn('irsend', ['SEND_ONCE', 'aircon', 'heat_28'])
+       }
+    else if (mode0 === 'cool') {
+       console.log(`28.0cool`)
+       spawn('irsend', ['SEND_ONCE', 'aircon', 'cool_28'])
+       }
+    else if (mode0 === 'auto') {    
+       console.log(`28.0auto`)    
+       spawn('irsend', ['SEND_ONCE', 'aircon', 'cool_28'])   
+       }
+  }
+  else if (payload === '29.0') {
+    if (mode0 === 'heat') {
+       console.log(`29.0heat`)
+       spawn('irsend', ['SEND_ONCE', 'aircon', 'heat_29'])
+       }
+    else if (mode0 === 'cool') {
+       console.log(`29.0cool`)
+       spawn('irsend', ['SEND_ONCE', 'aircon', 'cool_29'])
+       }
+    else if (mode0 === 'auto') {    
+       console.log(`29.0auto`)    
+       spawn('irsend', ['SEND_ONCE', 'aircon', 'cool_29'])   
+       }
+  }
+});
+
+</code></pre>
+<p>安装mqtt库: <code>npm install mqtt --save</code><br>
+运行客户端: <code>node aircon.js</code></p>
+<p>修改HomeAssistant配置，这里需要对应自己设置的主题。</p>
+<pre><code class="language-yaml">climate:
+  - platform: mqtt
+    name: Aircon
+    modes:
+      - off
+      - cool
+      - heat
+      - auto
+    mode_command_topic: &quot;mitsubishi/ac/mode/set&quot;
+    temperature_command_topic: &quot;mitsubishi/ac/temperature/set&quot;
+    
+</code></pre>
+<p>重启测试能否使用。</p>
+<p>mqtt客户端作为服务运行，<code>sudo vim /etc/systemd/system/node-mqtt@pi.service</code>，需要修改路径。</p>
+<pre><code>[Unit]
+Description=Mqtt client with Node
+
+[Service]
+ExecStart=/home/pi/smarthome/aircon.js
+Restart=always
+User=%i
+Environment=PATH=/usr/bin:/usr/local/bin
+Environment=NODE_ENV=production
+WorkingDirectory=/home/pi/smarthome
+
+[Install]
+WantedBy=multi-user.target
+
+</code></pre>
+<p><code>sudo systemctl daemon-reload</code>刷新服务，<code>sudo systemctl enable node-mqtt@pi.service</code>开机启动。</p>
+<h2 id="说明">说明</h2>
+<p>HomeAssistant中控制的时候有个问题，显示的false并不能关闭空调，而HomeKit中却可以关闭（siri关闭是调成自动模式），所以把选择Auto模式设置成发送关闭的红外码。</p>
+<p>其他的Auto温度也都是直接用了制冷的，实在是懒得录了，这模式一般也没用吧。</p>
+<p>这里是和遥控器一样通过红外发送来控制的，所以没有办法读到到底空调处于什么状态，也就是optimistic mode。这就会导致一个问题，设置了26度，然后打开制冷，其实执行的是'制冷28度'（这是我前面设置的），也就是说这个显示是不正确的，而模式打开后，再设置的温度就是准确的了。</p>
+<p>HomeKit上面显示的室温好像没办法改变。</p>
+<h2 id="参考">参考</h2>
+<p>https://bbs.hassbian.com/thread-1817-1-1.html<br>
+https://www.home-assistant.io/components/climate.mqtt/</p>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://taosky.github.io/post/pi-lirc-aircon-control/" class="post-title gt-a-link">
+                    树莓派Lirc红外控制空调
+                </a>
+            </div>
+        
+
+        
+
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first">只能告诉你 要多想</div>
+    <div class="social-container">
+        
+            
+                <a href="https://github.com/Taosky" target="_blank">
+                    <i class="fab fa-github gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        <span><i class="iconfont reco-copyright"></i> <a><span>2014-</span>
+        2020
+        &nbsp
+        <span>Taosky</span></a></span>
+    </div>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+    </div>
+</div>
+</body>
+</html>

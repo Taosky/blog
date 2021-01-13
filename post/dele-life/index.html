@@ -1,0 +1,218 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+<meta name="description" content=""/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>日剧《人生删除事务所》中的计算机“技术” | 某不科学的博客</title>
+
+<link rel="shortcut icon" href="https://taosky.github.io/favicon.ico?v=1610545653304">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://taosky.github.io/styles/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dart.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-56540702-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+        gtag('config', 'UA-56540702-2');
+    </script>
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <div class="navbar-brand">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first">
+            某不科学的博客
+        </div>
+    </div>
+    
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+                <div class="nav-item">
+                    
+                        <a href="/" class="menu gt-a-link">
+                            首页
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/tags" class="menu gt-a-link">
+                            标签
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/archives" class="menu gt-a-link">
+                            归档
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/friends" class="menu gt-a-link">
+                            友链
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/about" class="menu gt-a-link">
+                            留言
+                        </a>
+                    
+                </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1610545653304" action="/search/index.html">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    日剧《人生删除事务所》中的计算机“技术”
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2018-09-17 ·
+                    </time>
+                    
+                        <a href="https://taosky.github.io/tag/fREfnlziuY/" class="post-tags">
+                            # 日剧
+                        </a>
+                    
+                </div>
+                
+                <div class="post-content">
+                    <p><a href="https://www.v2ex.com/t/488307#r_6161005">V2EX</a>看到了推荐《人生删除事务所》，看了发现果然不错，一下子就看完了。</p>
+<p>大概就是属于“不务正业”的那种类型，讲的是一个处理电子遗产的事务所，但是也经常干着侦探的活。。。</p>
+<p>其中也出现了一些看起来很厉害的的计算机相关技术，在这简单记录一下。</p>
+<h2 id="android模拟器">Android模拟器</h2>
+<p>这里将日程App安装到模拟器，读取委托人日程。其实不太可能，App本身不应该带有数据的，难道写个日程还要写代码更新App吗。。。</p>
+<p><img src="https://taosky.github.io/post-images/dele.life/0.png" alt="" loading="lazy"><br>
+<img src="https://taosky.github.io/post-images/dele.life/1.png" alt="" loading="lazy"></p>
+<h2 id="密码字典破解">密码字典破解</h2>
+<p>这里是用姓名生日生成自定义字典，一般也有用现有密码字典的，不过原理都是一样的，通过不停地尝试登陆，试出正确的密码。</p>
+<p>其实现在很少有人设置这么简单的密码了，而且网络服务也会阻止密码尝试以及二次验证之类的，大概只能用来跑跑路由器密码吧。</p>
+<p><img src="https://taosky.github.io/post-images/dele.life/2.png" alt="" loading="lazy"><br>
+<img src="https://taosky.github.io/post-images/dele.life/3.png" alt="" loading="lazy"><br>
+<img src="https://taosky.github.io/post-images/dele.life/4.png" alt="" loading="lazy"></p>
+<h2 id="服务器后门">服务器后门</h2>
+<p>就是入侵服务器之后在服务器中留下不易察觉的入口，以便日后直接通过这个入口进入服务器。<br>
+记得以前常见的是PHP、ASP的WebShell，可以执行shell命令，进行提权等操作；一般都是通过文件上传的漏洞上传，进而能够控制服务器。</p>
+<figure data-type="image" tabindex="1"><img src="https://taosky.github.io/post-images/dele.life/5.png" alt="" loading="lazy"></figure>
+<p>常威，还说你不会武功？</p>
+<p><img src="https://taosky.github.io/post-images/dele.life/6.png" alt="" loading="lazy"><br>
+<img src="https://taosky.github.io/post-images/dele.life/7.png" alt="" loading="lazy"></p>
+<h2 id="远程控制">远程控制？</h2>
+<p>当然这肯定不是简单的远程控制，而是某种类似木马的程序，一般伪装成系统进程，隐藏在后台不被发现。<br>
+记得初中那会儿“灰鸽子”很流行，经常有加壳、改特征码产生的各类变种绕过检测，功能上可以说实现了对“肉鸡”完整控制。</p>
+<figure data-type="image" tabindex="2"><img src="https://taosky.github.io/post-images/dele.life/8.png" alt="" loading="lazy"></figure>
+<h2 id="bad-usb">Bad Usb？</h2>
+<p>剧里插入USB设备进行密码破解，猜测是Bad Usb。所谓Bad Usb是将Usb设备模拟鼠标键盘等交互设备输入，从而运行自己的恶意程序。不过这里的USB设备其实已经不是简单的U盘这种存储设备了，而是小型的系统，之前就看到过可以把树莓派做成Bad Usb。</p>
+<figure data-type="image" tabindex="3"><img src="https://taosky.github.io/post-images/dele.life/9.png" alt="" loading="lazy"></figure>
+<h2 id="vnc">VNC</h2>
+<p>剧情是，上面的Bad Usb还没能破解密码，主角就说了，没有加密磁盘就可以直接用，于是连上敲了一行命令就远程连接上去了。。。<br>
+而那条命令其实是开启了VNC服务（远程连接服务）。。。</p>
+<p><img src="https://taosky.github.io/post-images/dele.life/10.png" alt="" loading="lazy"><br>
+<img src="https://taosky.github.io/post-images/dele.life/11.png" alt="" loading="lazy"></p>
+<h2 id="云服务同步">云服务同步</h2>
+<p>这个思路感觉比较厉害，通过破解云服务密码及同步手机数据到云端，获取手机中的照片等信息。<br>
+不过一般是需要在经过认证的设备上才可以登陆。</p>
+<figure data-type="image" tabindex="4"><img src="https://taosky.github.io/post-images/dele.life/12.png" alt="" loading="lazy"></figure>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://taosky.github.io/post/sqlalchemy-multithreading/" class="post-title gt-a-link">
+                    Sqlalchemy和多线程和异步爬虫
+                </a>
+            </div>
+        
+
+        
+
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first">只能告诉你 要多想</div>
+    <div class="social-container">
+        
+            
+                <a href="https://github.com/Taosky" target="_blank">
+                    <i class="fab fa-github gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        <span><i class="iconfont reco-copyright"></i> <a><span>2014-</span>
+        2020
+        &nbsp
+        <span>Taosky</span></a></span>
+    </div>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+    </div>
+</div>
+</body>
+</html>

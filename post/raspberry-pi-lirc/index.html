@@ -1,0 +1,231 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+<meta name="description" content=""/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>树莓派lirc读取红外接收器的问题 | 某不科学的博客</title>
+
+<link rel="shortcut icon" href="https://taosky.github.io/favicon.ico?v=1610545653304">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://taosky.github.io/styles/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dart.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-56540702-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+        gtag('config', 'UA-56540702-2');
+    </script>
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <div class="navbar-brand">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first">
+            某不科学的博客
+        </div>
+    </div>
+    
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+                <div class="nav-item">
+                    
+                        <a href="/" class="menu gt-a-link">
+                            首页
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/tags" class="menu gt-a-link">
+                            标签
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/archives" class="menu gt-a-link">
+                            归档
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/friends" class="menu gt-a-link">
+                            友链
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/about" class="menu gt-a-link">
+                            留言
+                        </a>
+                    
+                </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1610545653304" action="/search/index.html">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    树莓派lirc读取红外接收器的问题
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2018-07-27 ·
+                    </time>
+                    
+                        <a href="https://taosky.github.io/tag/xM91c89VU/" class="post-tags">
+                            # LIRC
+                        </a>
+                    
+                        <a href="https://taosky.github.io/tag/QxU2xQq8NW/" class="post-tags">
+                            # 树莓派
+                        </a>
+                    
+                </div>
+                
+                <div class="post-content">
+                    <p>重新买了个模块终于成功了，<a href="https://detail.tmall.com/item.htm?id=543058185020&amp;spm=a1z09.2.0.0.7f902e8dmPnFva&amp;_u=31lgt5a72ec2">链接</a>，真的要给这店大大的好评。</p>
+<p>之前买的模块可能有问题，或者客服告诉我的接线不对，╮(╯▽╰)╭，看来硬件这种东西网络上也是很难找到问题所在。</p>
+<hr>
+<p>为了给HomeAssistant添加控制空调的功能，买了红外接收模块(KY-022)和发射模块，然而接收红外信号搞了两天也没有成功，简单记录一下。</p>
+<h2 id="lirc版本问题">LIRC版本问题</h2>
+<p>网上很多文章都是基于旧版本lirc来写的，一些配置文件，如<code>/etc/lirc/hardware.conf</code>在新版本上是不存在的，包管理器默认安装的0.94c版本。</p>
+<p>执行文件和服务名也不一样，旧版是<code>lirc</code>，新版是<code>lircd</code>。</p>
+<h2 id="树莓派gpio问题">树莓派GPIO问题</h2>
+<p>网上给的图居然是错的，安装gpiozero库可以查看本机的GPIO。<br>
+<code>sudo apt install python3-gpiozero</code><br>
+<code>pinout</code></p>
+<h2 id="电压问题">电压问题</h2>
+<p>模块说的是接5V，教程说的3.3V，<a href="https://www.cnblogs.com/huanglufei/articles/5562330.html">这篇文章</a>提到，测到io口电压不够，加了电压后有输出，试了下仍然没输出。</p>
+<h2 id="lirc配置文件的键值重复问题">lirc配置文件的键值重复问题</h2>
+<p>正常安装lirc后，查看服务状态，提示<code>/etc/lirc/lircd.conf.d/devinput.lircd.conf</code>这个文件里面相同的16进制对应多个键，然而修改后仍然没有成功，可能这个也并没影响吧。</p>
+<h2 id="gpio_in_pull">gpio_in_pull</h2>
+<p>开启debug<code>debug=on</code>，<code>mode2</code>之后<code>dmesg |grep lirc</code>可以看到</p>
+<pre><code>[   66.455224] lirc_rpi: in init_timing_params, freq=38000 pulse=13157, space=13158
+[   74.757991] lirc_rpi: 6lirc_rpi: freed IRQ 178
+[   84.855023] lirc_rpi: Interrupt 178 obtained
+[   84.855046] lirc_rpi: in init_timing_params, freq=38000 pulse=13157, space=13158
+[   92.758824] lirc_rpi: 6lirc_rpi: freed IRQ 178
+
+</code></pre>
+<p><a href="https://www.raspberrypi.org/forums/viewtopic.php?t=103320">这个贴</a>说<code>/boot/config.txt</code>中添加<code>gpio_in_pull=up</code>就可以，确实之前看的很多文章里面也是有这个参数，有的是down，是和模块有关。<br>
+原因在<a href="http://filter-failure.eu/2015/11/raspberry-pi-2-lirc-with-an-active-low-ir-receiver-with-raspbian-jessie/">这里</a>有</p>
+<p>然而，并不能行。。。</p>
+<p>之后在百度（谷歌也不是全能啊）搜到贴吧里也有相同情况，https://tieba.baidu.com/p/4079519080。<br>
+有人怀疑是lirc_rpi这个内核模块的问题，楼主自己写了代码读取数据，因为我需要录制红外信号，而不是直接接收使用，所以没有什么帮助。</p>
+<h2 id="重装raspbian-jessie旧版">重装raspbian jessie（旧版）</h2>
+<p>一通操作过后仍然没有反应，彻底放弃。</p>
+<h2 id="直接发射红外">直接发射红外</h2>
+<p>想跳过接收器，找现有的匹配好的代码控制空调。<br>
+https://github.com/r45635/HVAC-IR-Control</p>
+<p>家里空调试了个遍，都失败了。</p>
+<h2 id="有用参考">有用参考</h2>
+<p>https://www.raspberrypi.org/forums/viewtopic.php?t=192891#p1209208<br>
+https://www.raspberrypi.org/forums/viewtopic.php?t=99085<br>
+https://raspberrypi.stackexchange.com/questions/81876/raspberry-pi-3-not-lirc-not-running-working<br>
+https://gist.github.com/prasanthj/c15a5298eb682bde34961c322c95378b<br>
+https://github.com/josemotta/IoT.Starter.Api/tree/master/gpio-base<br>
+http://iaiai.iteye.com/blog/2411532<br>
+https://www.cnblogs.com/huanglufei/articles/5562330.html<br>
+https://www.raspberrypi.org/forums/viewtopic.php?t=103320<br>
+https://tieba.baidu.com/p/4079519080</p>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://taosky.github.io/post/homeassistant-2/" class="post-title gt-a-link">
+                    HomeAssistant联动HomeKit
+                </a>
+            </div>
+        
+
+        
+
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first">只能告诉你 要多想</div>
+    <div class="social-container">
+        
+            
+                <a href="https://github.com/Taosky" target="_blank">
+                    <i class="fab fa-github gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        <span><i class="iconfont reco-copyright"></i> <a><span>2014-</span>
+        2020
+        &nbsp
+        <span>Taosky</span></a></span>
+    </div>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+    </div>
+</div>
+</body>
+</html>

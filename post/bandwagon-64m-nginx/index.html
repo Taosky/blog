@@ -1,0 +1,286 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+<meta name="description" content=""/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>搬瓦工64M小鸡记录：(一)Nginx反代 | 某不科学的博客</title>
+
+<link rel="shortcut icon" href="https://taosky.github.io/favicon.ico?v=1610545653304">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://taosky.github.io/styles/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dart.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-56540702-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+        gtag('config', 'UA-56540702-2');
+    </script>
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <div class="navbar-brand">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first">
+            某不科学的博客
+        </div>
+    </div>
+    
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+                <div class="nav-item">
+                    
+                        <a href="/" class="menu gt-a-link">
+                            首页
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/tags" class="menu gt-a-link">
+                            标签
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/archives" class="menu gt-a-link">
+                            归档
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/friends" class="menu gt-a-link">
+                            友链
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/about" class="menu gt-a-link">
+                            留言
+                        </a>
+                    
+                </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1610545653304" action="/search/index.html">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    搬瓦工64M小鸡记录：(一)Nginx反代
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2018-01-20 ·
+                    </time>
+                    
+                        <a href="https://taosky.github.io/tag/QV7FIhCQe/" class="post-tags">
+                            # VPS
+                        </a>
+                    
+                        <a href="https://taosky.github.io/tag/Nj0rT1oygwF/" class="post-tags">
+                            # Linux
+                        </a>
+                    
+                        <a href="https://taosky.github.io/tag/R0DRLFGwd7/" class="post-tags">
+                            # Nginx
+                        </a>
+                    
+                        <a href="https://taosky.github.io/tag/_YxOjBh2AV/" class="post-tags">
+                            # 搬瓦工
+                        </a>
+                    
+                </div>
+                
+                <div class="post-content">
+                    <p>之前弄的东西太多太乱，索性重新弄一遍。</p>
+<h2 id="0">0</h2>
+<p>在vps面板安装debian7.0 x86 minimal（毕竟只有64M）。<br>
+<code>apt-get update</code></p>
+<p>解决public key 错误。<br>
+<code>apt-get install debian-keyring debian-archive-keyring</code><br>
+<code>apt-key update</code></p>
+<h2 id="nginx安装">Nginx安装</h2>
+<p>直接安装版本比较老，添加nginx的官方安装源到<code>/etc/apt/sources.list</code>。</p>
+<pre><code>deb http://nginx.org/packages/debian/ wheezy nginx
+deb-src http://nginx.org/packages/debian/ squeeze nginx
+</code></pre>
+<p>导入key。<br>
+<code>wget http://nginx.org/keys/nginx_signing.key &amp;&amp; apt-key add nginx_signing.key</code></p>
+<p><code>apt-get update</code><br>
+<code>apt-get remove --purge nginx nginx-full nginx-common</code><br>
+<code>apt-get install apt-utils dialog</code><br>
+<code>apt-get install nginx</code></p>
+<h2 id="添加模块">添加模块</h2>
+<p>要用到nginx_substitutions_filter这个模块进行正则替换，需要把模块编译进nginx然后替换现有的文件。<br>
+（之前尝试了其它的方法都没有成功，可能需要安装一些编译用的依赖）</p>
+<p><code>nginx -V</code>查看版本号和编译参数。<br>
+<img src="https://taosky.github.io/post-images/bandwagon-64m-nginx/1.png" alt="" loading="lazy"></p>
+<p>下载并解压nginx源码，这里是1.12.1版本。<br>
+<code>wget http://nginx.org/download/nginx-1.12.1.tar.gz</code><br>
+<code>tar -xzvf nginx-1.12.1.tar.gz</code></p>
+<p>下载模块源码。<br>
+<code>git clone git://github.com/yaoweibin/ngx_http_substitutions_filter_module.git</code></p>
+<p>添加模块并编译。<br>
+<code>cd nginx-1.12.1</code><br>
+<code>./configure --add-module=/tmp/ngx_http_substitutions_filter_module [这里是之前查看到的编译参数]</code><br>
+<code>make &amp;&amp; make install</code></p>
+<h2 id="配置nginx-server">配置nginx server</h2>
+<p>在<code>/etc/nginx/conf.d/</code>下新建'.conf'文件，nginx会自动加载。</p>
+<pre><code>server {
+	listen 80;
+	server_name xxx.mou.science;
+	location /.well-known {
+		alias /var/www/xxx.mou.science/.well-known;
+	}    
+}
+</code></pre>
+<p>这里的/.well-known 是将xxx.mou.science/.well-known 指向了网站目录下的这个文件夹，申请证书时用来验证。</p>
+<p>每次修改后需要重启nginx。<br>
+<code>/etc/init.d/nginx restart</code></p>
+<p>使用<a href="https://certbot.eff.org/#debianwheezy-nginx">certbot</a>脚本来申请Let's Encrypt证书。</p>
+<p><code>wget https://dl.eff.org/certbot-auto</code><br>
+<code>chmod a+x certbot-auto</code><br>
+<code>certbot-auto certonly</code></p>
+<p>第一次运行需要安装，要输入邮箱用于提醒。<br>
+选择'3: Place files in webroot directory'，之后按照提示输入域名，选择网站目录，等待验证通过，证书会保存到本地。</p>
+<p>验证通过后再次修改配置(以google为例)。</p>
+<pre><code>server {
+	listen 80;
+	server_name xxx.mou.science;
+	rewrite     ^   https://$host$request_uri? permanent; # 重定向
+}
+
+server {
+	listen 8443 ssl;
+    
+	server_name xxx.mou.science;
+    
+	ssl_certificate /etc/letsencrypt/live/xxx.mou.science/fullchain.pem;
+	ssl_certificate_key /etc/letsencrypt/live/xxx.mou.science/privkey.pem;
+    
+	ssl_stapling on;
+	ssl_stapling_verify on;
+    
+    location /.well-known {
+		alias /var/www/xxx.mou.science/.well-known;
+	}
+	location / {
+		proxy_pass https://www.google.ca;
+		proxy_cookie_domain google.ca xxx.mou.science;
+		proxy_set_header Accept-Encoding &quot;&quot;;
+		proxy_set_header User-Agent $http_user_agent;
+		proxy_set_header Accept-Language &quot;zh-CN&quot;;
+		proxy_set_header X-Real-IP $remote_addr;
+		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+		proxy_set_header X-Forwarded-Proto https;
+		proxy_set_header Cookie &quot;PREF=ID=047808f19f6de346:U=0f62f33dd8549d11:FF=2:LD=zh-CN:NW=1:TM=1325338577:LM=1332142444:GM=1:SG=2:S=rE0SyJh2W1IQ-Maw&quot;;
+		subs_filter www.google.ca xxx.mou.science;
+        subs_filter ssl.gstatic.com yyy.mou.science; # 这个也需要反代，此处不演示。
+	}
+
+}
+</code></pre>
+<p><code>/etc/init.d/nginx restart</code></p>
+<p>这时候应该就可以访问了。</p>
+<p>参考：<br>
+http://blog.csdn.net/DBABruce/article/details/50905797</p>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://taosky.github.io/post/japanese-learn-note-29-30/" class="post-title gt-a-link">
+                    日语学习笔记29、30课
+                </a>
+            </div>
+        
+
+        
+
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first">只能告诉你 要多想</div>
+    <div class="social-container">
+        
+            
+                <a href="https://github.com/Taosky" target="_blank">
+                    <i class="fab fa-github gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        <span><i class="iconfont reco-copyright"></i> <a><span>2014-</span>
+        2020
+        &nbsp
+        <span>Taosky</span></a></span>
+    </div>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+    </div>
+</div>
+</body>
+</html>

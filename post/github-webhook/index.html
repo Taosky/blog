@@ -1,0 +1,218 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+<meta name="description" content=""/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>体验一下Github的Webhook | 某不科学的博客</title>
+
+<link rel="shortcut icon" href="https://taosky.github.io/favicon.ico?v=1610545653304">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://taosky.github.io/styles/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dart.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-56540702-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+        gtag('config', 'UA-56540702-2');
+    </script>
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <div class="navbar-brand">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first">
+            某不科学的博客
+        </div>
+    </div>
+    
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+                <div class="nav-item">
+                    
+                        <a href="/" class="menu gt-a-link">
+                            首页
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/tags" class="menu gt-a-link">
+                            标签
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/archives" class="menu gt-a-link">
+                            归档
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/friends" class="menu gt-a-link">
+                            友链
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/about" class="menu gt-a-link">
+                            留言
+                        </a>
+                    
+                </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1610545653304" action="/search/index.html">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    体验一下Github的Webhook
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2018-08-23 ·
+                    </time>
+                    
+                        <a href="https://taosky.github.io/tag/njOgSuyEh/" class="post-tags">
+                            # Node
+                        </a>
+                    
+                        <a href="https://taosky.github.io/tag/AhUfM-fggT/" class="post-tags">
+                            # Webhook
+                        </a>
+                    
+                        <a href="https://taosky.github.io/tag/0t-QksWwNA/" class="post-tags">
+                            # Github
+                        </a>
+                    
+                </div>
+                
+                <div class="post-content">
+                    <p>这东西就是版本库变动之后会给设定的URL发送一个POST请求，然后服务器通过这个请求去Pull以及构建重启web服务什么的，不用手动去服务器更新，好像也有其他不得了的玩法。</p>
+<h2 id="用于webhook的web服务">用于Webhook的web服务</h2>
+<p><strong>更新：</strong><a href="https://github.com/bloomberg/python-github-webhook">python-github-webhook</a>，这个库可以很简单地监听事件做出动作。<br>
+只要加上对应地装饰器，就可以监听对应事件了。</p>
+<p><a href="https://developer.github.com/webhooks/">正常做法</a>有很多信息可以获得，但是我只是更新代码构建，最简单的是接收到post请求采取动作就行了。</p>
+<p>图省事直接扔在现有flask项目里面了，本来想验证secret，试了半天没成功，真正使用的时候有风险，一定要加上。</p>
+<p>看网上的文章都是用的node，有个<a href="https://github.com/rvagg/github-webhook-handler">webhook的包</a>很方便。</p>
+<pre><code class="language-python">@app.route('/webhook', methods=['POST'])
+def webhook():
+    if 'X-Hub-Signature' in request.headers and request.headers['X-Hub-Signature'].startswith('sha1='):
+        p=Popen('/var/www/xxx/webhook.sh')
+        return 'Ok'
+    else:
+        return 'Forbidden.', 403
+
+</code></pre>
+<h2 id="触发的脚本">触发的脚本</h2>
+<p>上面的代码里面就有执行<code>/var/www/xxx/webhook.sh</code>这个脚本，在这个脚本里做<code>pull</code>和别的事就行了。</p>
+<pre><code class="language-bash">#!/bin/bash
+cd /var/www/xxx
+git pull
+git checkout master
+yarn run build
+</code></pre>
+<h2 id="在github添加">在Github添加</h2>
+<p>可以选择只监听<code>Push</code>还是全部或是自己选。</p>
+<p>添加之后会自动发送一个测试的请求验证是否正确。</p>
+<figure data-type="image" tabindex="1"><img src="https://taosky.github.io/post-images/github-webhook/1.png" alt="" loading="lazy"></figure>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://taosky.github.io/post/japanese-learn-note-33-34/" class="post-title gt-a-link">
+                    日语学习笔记33、34课
+                </a>
+            </div>
+        
+
+        
+
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first">只能告诉你 要多想</div>
+    <div class="social-container">
+        
+            
+                <a href="https://github.com/Taosky" target="_blank">
+                    <i class="fab fa-github gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        <span><i class="iconfont reco-copyright"></i> <a><span>2014-</span>
+        2020
+        &nbsp
+        <span>Taosky</span></a></span>
+    </div>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+    </div>
+</div>
+</body>
+</html>

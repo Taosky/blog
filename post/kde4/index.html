@@ -1,0 +1,205 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+<meta name="description" content=""/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>转-KDE4的配置参考 | 某不科学的博客</title>
+
+<link rel="shortcut icon" href="https://taosky.github.io/favicon.ico?v=1610545653304">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://taosky.github.io/styles/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dart.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-56540702-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+        gtag('config', 'UA-56540702-2');
+    </script>
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <div class="navbar-brand">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first">
+            某不科学的博客
+        </div>
+    </div>
+    
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+                <div class="nav-item">
+                    
+                        <a href="/" class="menu gt-a-link">
+                            首页
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/tags" class="menu gt-a-link">
+                            标签
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/archives" class="menu gt-a-link">
+                            归档
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/friends" class="menu gt-a-link">
+                            友链
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/about" class="menu gt-a-link">
+                            留言
+                        </a>
+                    
+                </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1610545653304" action="/search/index.html">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    转-KDE4的配置参考
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2014-11-06 ·
+                    </time>
+                    
+                        <a href="https://taosky.github.io/tag/_7SwkaRdv/" class="post-tags">
+                            # KDE
+                        </a>
+                    
+                        <a href="https://taosky.github.io/tag/Nj0rT1oygwF/" class="post-tags">
+                            # Linux
+                        </a>
+                    
+                </div>
+                
+                <div class="post-content">
+                    <h2 id="tags-kdelinux">tags: [kde,linux]</h2>
+<p>原文<a href="http://sforkw.jd-app.com/?p=114">链接</a></p>
+<h2 id="发行版">发行版:</h2>
+<p>我的发行版是Arch，没有Arch强大的AUR，很多桌面的配件很难装上。<br>
+##主题：<br>
+我的plasma主题是Helium与dynamo主题混合而成。<br>
+标题栏主题是Qtcurve，图标主题是dynamo与flattr混合而成，<br>
+鼠标主题是Breeze。应用程序主题是Qtcurve，配色是Breeze。<br>
+这些都可以到<a href="http://pan.baidu.com/s/1ntC54H7">这里下载</a><br>
+先安装qtcurve再将下载下来的<br>
+文件解压并覆盖～/.kde4/share/即可。注意，Qtcurve的配置<br>
+方案是Breeze，并且在窗口管理器中设置边框大小是无侧边框。</p>
+<h2 id="全局菜单">全局菜单：</h2>
+<p>全局菜单可以先加archlinuxcn源，然后依次用<br>
+yaourt安装appmenu-qt,appmenu-qt5,appmenu-gtk,kdeplasma-applets-menubar。<br>
+完成之后在面板上添加刚安装的部件再打开<br>
+“系统设置&gt;应用程序外观&gt;风格”<br>
+然后选择微调标签，修改“菜单栏风格”为“仅导出”就能有全局菜单了。</p>
+<h2 id="最大化隐藏菜单栏">最大化隐藏菜单栏：</h2>
+<p>最大化隐藏菜单栏可以直接在qtCurve中配置，<br>
+依然在“窗口管理器”中，勾选“最大化窗口无边框”复选框即可。</p>
+<h2 id="最大化上面板显示窗口控制按钮">最大化上面板显示窗口控制按钮：</h2>
+<p>（最后一张图鼠标所指的地方）<br>
+在AUR中安装kdeplasma-applets-kwin-button-improved，<br>
+然后在面板上重复三次添加这个部件，分别设置为最小化（iconify），<br>
+最大化/回复（maximize/restore）和关闭（close）就行了。</p>
+
+                </div>
+            </article>
+        </div>
+
+        
+
+        
+
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first">只能告诉你 要多想</div>
+    <div class="social-container">
+        
+            
+                <a href="https://github.com/Taosky" target="_blank">
+                    <i class="fab fa-github gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        <span><i class="iconfont reco-copyright"></i> <a><span>2014-</span>
+        2020
+        &nbsp
+        <span>Taosky</span></a></span>
+    </div>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,272 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+<meta name="description" content=""/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>HomeAssistant IOS推送 | 某不科学的博客</title>
+
+<link rel="shortcut icon" href="https://taosky.github.io/favicon.ico?v=1610545653304">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://taosky.github.io/styles/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dart.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-56540702-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+        gtag('config', 'UA-56540702-2');
+    </script>
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <div class="navbar-brand">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first">
+            某不科学的博客
+        </div>
+    </div>
+    
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+                <div class="nav-item">
+                    
+                        <a href="/" class="menu gt-a-link">
+                            首页
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/tags" class="menu gt-a-link">
+                            标签
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/archives" class="menu gt-a-link">
+                            归档
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/friends" class="menu gt-a-link">
+                            友链
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/about" class="menu gt-a-link">
+                            留言
+                        </a>
+                    
+                </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1610545653304" action="/search/index.html">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    HomeAssistant IOS推送
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2018-08-19 ·
+                    </time>
+                    
+                        <a href="https://taosky.github.io/tag/QcyqZ1Q8u/" class="post-tags">
+                            # Home Assistant
+                        </a>
+                    
+                        <a href="https://taosky.github.io/tag/jeCxJml2y-/" class="post-tags">
+                            # 智能家居
+                        </a>
+                    
+                        <a href="https://taosky.github.io/tag/2Ltvmdfo_l/" class="post-tags">
+                            # IOS
+                        </a>
+                    
+                </div>
+                
+                <div class="post-content">
+                    <p>IOS平台一大好处是通知推送，HomeAssistant中已经很完善了，简单地配置之后就可以用。</p>
+<h2 id="添加组件">添加组件</h2>
+<p>配置文件里添加<code>ios:</code>重启加载IOS组件，在App中设置-通知设置-更新推送设置，可以看到IOS组件和通知平台都打勾了。<br>
+<img src="https://taosky.github.io/post-images/homeassistant-7/1.jpg" alt="" loading="lazy"></p>
+<p>在开发者工具-服务里面也会有相应项，就可以使用了。<br>
+<img src="https://taosky.github.io/post-images/homeassistant-7/2.png" alt="" loading="lazy"></p>
+<h2 id="简单通知">简单通知</h2>
+<p>通知一般在自动化里面调用通知服务，比如一个最简单的HomeAssistant启动通知。</p>
+<p>可以添加标题副标题，这里的<a href="https://r12a.github.io/app-conversion/">unicode字串</a>是显示的表情。</p>
+<pre><code class="language-yaml">- alias: hass_start_notify
+  trigger:
+  - event: start
+    platform: homeassistant
+  condition: []
+  action:
+  - service: notify.ios_taosky8p
+    data:
+      message: &quot;{{ '/uD83D/uDE09' }}Home Assistant刚刚启动了。&quot;
+</code></pre>
+<p>效果如下：</p>
+<figure data-type="image" tabindex="1"><img src="https://taosky.github.io/post-images/homeassistant-7/3.png" alt="" loading="lazy"></figure>
+<h2 id="带操作按钮的通知">带操作按钮的通知</h2>
+<p>3D Touch通知之后会有选项的那种，比如收到树莓派温度过高的通知可以直接关闭它。</p>
+<figure data-type="image" tabindex="2"><img src="https://taosky.github.io/post-images/homeassistant-7/4.jpg" alt="" loading="lazy"></figure>
+<p>这个其实是两个自动化完成的，一个是通知的自动化，一个是收到通知按钮之后作出反应的自动化。</p>
+<p>首先需要在ios.push里面添加一个按钮模板，也就是通知上的按钮的样子。具体参数的含义见<a href="https://www.home-assistant.io/docs/ecosystem/ios/notifications/actions/">官方文档</a>，这个对大小写很敏感，如出错可能是大小写问题。</p>
+<p>其次是正常的一个自动化，相比较上面的简单通知，里面多了个<code>data</code>指定按钮的模板。</p>
+<p>最后是触发按钮的自动化，用到<code>ios.notification_action_fired</code>这个事件，然后在action里面真正完成我们的关机的操作。</p>
+<pre><code class="language-yaml">shell_command:
+  shutdown_pi: sudo shutdown -h now
+
+script:
+  shutdown_pi:
+    alias: 关闭树莓派
+    sequence:
+      - service: shell_command.shutdown_pi
+
+ios:
+  push:
+    categories:
+      - name: Piwarning
+        identifier: 'piwarning'
+        actions:
+          - identifier: 'SHUTDOWN_PI'
+            title: '立即关闭PI？'
+            activationMode: 'background'
+            authenticationRequired: yes
+            destructive: yes
+            behavior: 'default'
+           
+automation:
+  - alias: pi_temp_warning
+    trigger:
+      platform: numeric_state
+      entity_id: sensor.pi_temp
+      above: 50
+    condition: []
+    action:
+    - service: notify.ios_taosky8p
+      data:
+        message: &quot;{{ '/uD83D/uDE31' }} 树莓派温度过高（超过50度）！&quot;
+        data:
+          push:
+            category: &quot;piwarning&quot;
+          
+  - alias: ios_action_shutdown_pi
+    trigger:
+      platform: event
+      event_type: ios.notification_action_fired
+      event_data:
+        actionName: SHUTDOWN_PI
+    action:
+      - service: script.turn_on
+        entity_id: script.shutdown_pi
+      
+
+</code></pre>
+<h2 id="参考">参考</h2>
+<p>https://www.home-assistant.io/docs/ecosystem/ios/notifications/basic/<br>
+https://www.home-assistant.io/docs/ecosystem/ios/notifications/actions/<br>
+https://bbs.hassbian.com/thread-1430-1-1.html<br>
+https://bbs.hassbian.com/thread-3366-1-1.html</p>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://taosky.github.io/post/homeassistant-6/" class="post-title gt-a-link">
+                    HomeAssistant加入空调控制（LIRC）并接入HomeKit
+                </a>
+            </div>
+        
+
+        
+
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first">只能告诉你 要多想</div>
+    <div class="social-container">
+        
+            
+                <a href="https://github.com/Taosky" target="_blank">
+                    <i class="fab fa-github gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        <span><i class="iconfont reco-copyright"></i> <a><span>2014-</span>
+        2020
+        &nbsp
+        <span>Taosky</span></a></span>
+    </div>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+    </div>
+</div>
+</body>
+</html>

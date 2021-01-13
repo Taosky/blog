@@ -1,0 +1,323 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+<meta name="description" content=""/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>HomeAssistant脚本&amp;自动化&amp;Package | 某不科学的博客</title>
+
+<link rel="shortcut icon" href="https://taosky.github.io/favicon.ico?v=1610545653304">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://taosky.github.io/styles/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dart.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-56540702-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+        gtag('config', 'UA-56540702-2');
+    </script>
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <div class="navbar-brand">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first">
+            某不科学的博客
+        </div>
+    </div>
+    
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+                <div class="nav-item">
+                    
+                        <a href="/" class="menu gt-a-link">
+                            首页
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/tags" class="menu gt-a-link">
+                            标签
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/archives" class="menu gt-a-link">
+                            归档
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/friends" class="menu gt-a-link">
+                            友链
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/about" class="menu gt-a-link">
+                            留言
+                        </a>
+                    
+                </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1610545653304" action="/search/index.html">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    HomeAssistant脚本&amp;自动化&amp;Package
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2018-08-01 ·
+                    </time>
+                    
+                        <a href="https://taosky.github.io/tag/QcyqZ1Q8u/" class="post-tags">
+                            # Home Assistant
+                        </a>
+                    
+                        <a href="https://taosky.github.io/tag/jeCxJml2y-/" class="post-tags">
+                            # 智能家居
+                        </a>
+                    
+                </div>
+                
+                <div class="post-content">
+                    <p>到这里，Homeassistant的主要功能就了解的差不多了，其实所谓“智能”主要就是自动化加上想象力。</p>
+<h2 id="脚本">脚本</h2>
+<p>就是手动触发，然后执行一个或多个动作，详见<a href="https://home-assistant-china.github.io/components/script/">文档</a>。比如下面这个就是延迟三十分钟关闭电扇，这里其实是延迟和关闭开关两个动作了。</p>
+<pre><code class="language-yaml">script:
+  delay_turn_off_switch
+    alias: 延迟关闭电扇
+    sequence:
+      - delay: '00:30'
+      - service: homeassistant.turn_off
+        entity_id: switch.xiaomi_switch_one
+</code></pre>
+<h2 id="自动化">自动化</h2>
+<figure data-type="image" tabindex="1"><img src="https://taosky.github.io/post-images/homeassistant-5/1.png" alt="" loading="lazy"></figure>
+<p>自动化其实也是去执行动作，不过不需要手动触发，而是由某个状态发生改变触发，如时间、开关打开、温度变化等；此外可能还需要一个环境条件，比如人在家、某个时间段内。</p>
+<p>举个例子，如果人在家的话，每天早上9点播报天气情况。这里每天9点就是触发条件，人在家就是环境条件，播报天气就是动作。每个自动化实例可以有多个触发条件和环境条件。</p>
+<p>这里我写了个自动重启HomeAssistant的脚本，<code>shell_command</code>可以执行linux命令，添加了一个脚本去执行这个命令；自动化中<code>trigger</code>是触发条件，这里设定的时间11：30（似乎有简单的写法）；<code>condition</code>是环境条件，这里是设备组的状态，没有设备在家（这个组排除了智能设备）才会执行；<code>action</code>是动作，执行重启的脚本。</p>
+<pre><code class="language-yaml">shell_command:
+  restart_hass: sudo service home-assistant@pi restart
+
+script:
+  restart_hass:
+    alias: 重启HomeAssistant
+    sequence:
+      - service: shell_command.restart_hass
+
+automation:
+- alias: restart_hass_daily
+  initial_state: true
+  trigger:
+    - platform: time
+      hours: 11
+      minutes: 30
+      seconds: 00
+  condition:
+  - condition: state
+    entity_id: group.human_device
+    state: not_home
+  action:
+    - service: script.turn_on
+      entity_id: script.restart_hass
+
+</code></pre>
+<h2 id="package">Package</h2>
+<p>这个东西还挺有用的，就是把一些配置打包成一个文件（上面那个自动重启的代码其实就是了），因为很多功能是需要多个部分的配置，打包后配置更清晰，也方便分享。</p>
+<p>需要在<code>configuration.yaml</code>中添加<code>packages: !include_dir_named packages</code>，然后下载的或自己写的配置直接扔到配置目录下的<code>packages</code>文件夹即可。</p>
+<p>这里需要说明一点，如果<code>antomations.yaml</code>中没有内容，而在包里面有自动化的内容，重启之后会出错，而脚本好像没这个问题，感觉是很奇怪的Bug，所以要先往<code>antomations.yaml</code>里面放至少一个自动化。</p>
+<p>分享一个我参考网上代码修改的延时开关配置，需要修改<code>xiaomi_switch_one</code>为你自己的开关，保存为<code>.yaml</code>后缀放入<code>packages</code>。（需安装Custom UI，参考<a href="https://mou.science/2018/07/29/homeassistant-4/">上一篇</a>）</p>
+<figure data-type="image" tabindex="2"><img src="https://taosky.github.io/post-images/homeassistant-5/2.png" alt="" loading="lazy"></figure>
+<pre><code class="language-yaml">homeassistant:
+  customize:
+    input_boolean.alarm_clock:
+      friendly_name: 延时开关
+
+    sensor.relative_alarm_time:
+      friendly_name: 设定时间
+      custom_ui_state_card: state-card-custom-ui
+      extra_data_template: if (entities['switch.xiaomi_switch_one'].state === 'on') return '延时关闭时间'; else return '延时开启时间';
+
+sensor:
+  - platform: template
+    sensors:
+      relative_alarm_time:
+        value_template: &gt;
+                       {% set relative_time =  (states.input_number.alarmhour.state|float|multiply(60) + states.input_number.alarmminutes.state|float) + (now().hour|float|multiply(60) + now().minute|float) %}
+                       {%- if relative_time &gt; 1440 -%}
+                          {{((relative_time-1920) |int |multiply(60)) | timestamp_custom(&quot;%H:%M&quot;)}}
+                        {%- else -%}
+                          {{((relative_time-480) |int |multiply(60)) | timestamp_custom(&quot;%H:%M&quot;)}}
+                       {%- endif %}
+        unit_of_measurement: &quot;min&quot;
+
+input_boolean:
+  alarm_clock:
+    initial: off
+    icon: mdi:timer
+
+input_number:
+  alarmhour:
+    name: 小时
+    icon: mdi:timer
+    initial: 0
+    min: 0
+    max: 5
+    step: 1
+  alarmminutes:
+    name: 分钟
+    icon: mdi:timer
+    initial: 30
+    min: 0
+    max: 55
+    step: 1
+    
+group:
+  switch1:
+    name: 电扇
+    control: hidden
+    view: no
+    entities:
+      - switch.xiaomi_switch_one
+      - input_boolean.alarm_clock
+      - sensor.relative_alarm_time
+      - input_number.alarmhour
+      - input_number.alarmminutes
+
+automation:
+- alias: countdown time
+  initial_state: true
+  trigger:
+    platform: time
+    minutes: '/1'
+    seconds: 00
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.alarm_clock
+        state: 'on'
+      - condition: template
+        value_template: '{{ (now().hour|float|multiply(60) + now().minute|float - 480 ) |multiply(60) | timestamp_custom(&quot;%H:%M&quot;) == states.sensor.relative_alarm_time.state }}'
+  action:
+    - service_template: &gt;
+        {% if is_state('switch.xiaomi_switch_one', 'off') %}
+          switch.turn_on
+        {% else %}
+          switch.turn_off
+        {% endif %}
+      data:
+        entity_id: switch.xiaomi_switch_one
+    - service: homeassistant.turn_off
+      entity_id: input_boolean.alarm_clock
+    
+</code></pre>
+<h2 id="参考">参考</h2>
+<p>https://bbs.hassbian.com/forum.php?mod=viewthread&amp;tid=1806&amp;highlight=%E5%BB%B6%E6%97%B6<br>
+https://community.home-assistant.io/t/solved-automation-in-package-not-working/24768<br>
+https://www.home-assistant.io/components/script/<br>
+https://www.hachina.io/docs/1848.html</p>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://taosky.github.io/post/homeassistant-4/" class="post-title gt-a-link">
+                    HomeAssistant分组&amp;自定义&amp;Custom UI
+                </a>
+            </div>
+        
+
+        
+
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first">只能告诉你 要多想</div>
+    <div class="social-container">
+        
+            
+                <a href="https://github.com/Taosky" target="_blank">
+                    <i class="fab fa-github gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        <span><i class="iconfont reco-copyright"></i> <a><span>2014-</span>
+        2020
+        &nbsp
+        <span>Taosky</span></a></span>
+    </div>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+    </div>
+</div>
+</body>
+</html>
